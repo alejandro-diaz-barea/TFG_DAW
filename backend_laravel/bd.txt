@@ -1,0 +1,41 @@
+Usuarios:
+
+ID
+Email
+Contrasena
+Ciudad
+Nombre
+Apellido
+FechaNacimiento
+Telefono
+Productos:
+
+ID
+Nombre
+Descripcion
+Precio
+Estado
+FechaPublicacion
+IDVendedor (clave foránea de Usuarios)
+Chats:
+
+ID
+IDUsuario1
+IDUsuario2
+Mensajes:
+
+ID
+IDChat
+IDRemitente (clave foránea de Usuarios)
+Contenido
+Timestamp
+CategoriasProductos :
+
+ID
+NombreCategoria
+
+ProductosCategorias :
+
+ID
+IDProducto
+IDCategoria
