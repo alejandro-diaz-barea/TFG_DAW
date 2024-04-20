@@ -1,15 +1,13 @@
 Usuarios:
-
 ID
 Email
 Contrasena
 Ciudad
 Nombre
-Apellido
-FechaNacimiento
 Telefono
-Productos:
 
+
+Productos:
 ID
 Nombre
 Descripcion
@@ -17,25 +15,28 @@ Precio
 Estado
 FechaPublicacion
 IDVendedor (clave foránea de Usuarios)
-Chats:
 
+
+Chats:
 ID
 IDUsuario1
 IDUsuario2
-Mensajes:
 
+
+Mensajes:
 ID
 IDChat
 IDRemitente (clave foránea de Usuarios)
 Contenido
 Timestamp
-CategoriasProductos :
 
+
+CategoriasProductos :
 ID
 NombreCategoria
 
-ProductosCategorias :
 
+ProductosCategorias :
 ID
 IDProducto
 IDCategoria
