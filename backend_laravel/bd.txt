@@ -1,42 +1,42 @@
-Usuarios:
+User:
 ID
 Email
-Contrasena
-Ciudad
-Nombre
-Telefono
+Password
+Address
+Name
+Phone Number
 
 
-Productos:
+Product:
 ID
-Nombre
-Descripcion
-Precio
-Estado
-FechaPublicacion
-IDVendedor (clave foránea de Usuarios)
+Name
+Description
+Price
+State
+Date
+IDSeller (clave foránea de Usuarios)
 
 
-Chats:
+Chat:
 ID
 IDUsuario1
 IDUsuario2
 
 
-Mensajes:
+Message:
 ID
 IDChat
-IDRemitente (clave foránea de Usuarios)
-Contenido
+Contain
 Timestamp
+View
 
 
-CategoriasProductos :
+ProductCategory:
 ID
-NombreCategoria
+IDProduct
+IDCategory
 
 
-ProductosCategorias :
+Category:
 ID
-IDProducto
-IDCategoria
+CategoryName
