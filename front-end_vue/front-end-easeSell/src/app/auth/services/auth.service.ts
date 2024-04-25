@@ -1,30 +1,41 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 import { User } from '../interfaces/user.interfaces';
-import { Observable } from 'rxjs';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  // private baseUrl = environment.baseUrl
+  public isLoggedIn: boolean = false; // Variable para mantener el estado de inicio de sesión
+  private currentUser?: User; // Usuario actualmente autenticado
 
-  private user?: User;
+  constructor() { }
 
-
-
-
-  constructor(private http: HttpClient) {
-
-   }
-
-
-  get currentUser(): User | undefined {
-    if(!this.user) return undefined;
-    return structuredClone(this.user);
+  get isUserLoggedIn(): boolean {
+    return this.isLoggedIn; // Retorna el estado de inicio de sesión actual
   }
 
-  // login( email:string, password:string): Observable<User>{
+  get currentUserInfo(): User | undefined {
+    return this.currentUser; // Retorna la información del usuario actualmente autenticado
+  }
 
-  // }
+  login(email: string, password: string): Observable<boolean> {
+    // Simula una verificación de credenciales sin hacer ninguna llamada HTTP
+    if (email === 'user@example.com' && password === 'password') {
+      // Si las credenciales son válidas, establece el estado de inicio de sesión como verdadero
+      this.isLoggedIn = true;
+      // Simplemente crea un usuario ficticio para demostrar el concepto
+      this.currentUser = { id: 1, user: 'example_user', email: email };
+      return of(true); // Retorna un observable con el resultado del inicio de sesión
+    } else {
+      // Si las credenciales no son válidas, retorna un error observable o un valor falso
+      return of(false);
+    }
+  }
 
+  logout(): void {
+    // Simplemente establece el estado de inicio de sesión como falso al cerrar sesión
+    this.isLoggedIn = false;
+    // También limpia la información del usuario actual
+    this.currentUser = undefined;
+  }
 }

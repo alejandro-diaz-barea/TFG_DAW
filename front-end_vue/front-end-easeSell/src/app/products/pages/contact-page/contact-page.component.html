@@ -1,1 +1,13 @@
-<p>contact-page works!</p>
+<section>
+  <h1 class="titulo">Contact us</h1>
+  <form autocomplete="off" [formGroup]="contact">
+    <input type="email" class="campo-input campo-email" placeholder="Email" formControlName="email" (blur)="validarCampo('email')" />
+    <p *ngIf="contact.get('email')?.invalid && contact.get('email')?.touched" class="mensaje-error">Por favor ingrese un email válido.</p>
+    <input type="text" class="campo-input campo-texto" placeholder="Write a message ..." formControlName="texto" (blur)="validarCampo('texto')">
+    <p *ngIf="contact.get('texto')?.invalid && contact.get('texto')?.touched" class="mensaje-error">Por favor ingrese al menos 10 caracteres.</p>
+    <input type="date" class="campo-input campo-fecha" placeholder="Date" formControlName="fecha" (blur)="validarCampo('fecha')">
+    <p *ngIf="contact.get('fecha')?.invalid && contact.get('fecha')?.touched" class="mensaje-error">Por favor seleccione una fecha válida a partir del 1 de enero de 2024.</p>
+    <button class="boton-enviar" (click)="enviarFormulario()">Enviar</button>
+    <p *ngIf="enviadoConExito" class="mensaje-exito">Entregado con éxito!</p>
+  </form>
+</section>

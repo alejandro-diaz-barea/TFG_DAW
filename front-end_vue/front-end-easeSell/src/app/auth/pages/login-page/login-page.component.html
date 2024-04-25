@@ -1,9 +1,11 @@
 <section class="login-container">
   <article class="login-form">
     <h1 class="login_title">Login</h1>
-    <input type="email" class="campo-input campo-email" placeholder="Email">
-    <input type="password" class="campo-input campo-password" placeholder="Password">
-    <button class="boton-login">LOGIN</button>
-    <p class="dontAcount">Don't have an account yet? <a>Sign up</a></p>
+    <form [formGroup]="loginForm">
+      <input type="email" formControlName="email" class="campo-input campo-email" placeholder="Email">
+      <input type="password" formControlName="password" class="campo-input campo-password" placeholder="Password">
+      <button type="submit" class="boton-login" (click)="login()">LOGIN</button>
+      <p class="dontAcount">Don't have an account yet? <a routerLink='/auth/new-acount'>Sign up</a></p>
+    </form>
   </article>
 </section>

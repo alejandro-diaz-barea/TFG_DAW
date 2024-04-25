@@ -3,6 +3,8 @@ import {Routes, RouterModule } from '@angular/router';
 import { LayoutPageComponent } from './pages/layout-page/layout-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { ContactPageComponent } from './pages/contact-page/contact-page.component';
+import { SellPageComponent } from './pages/sell-page/sell-page.component';
+import { ExplorePageComponent } from './pages/explore-page/explore-page.component';
 
 const routes: Routes = [
   {
@@ -10,14 +12,19 @@ const routes: Routes = [
     component: LayoutPageComponent,
     children: [
       {
-        path: 'home', component: HomePageComponent
+        path: '',
+        component: HomePageComponent
       },
       {
         path: 'contact', component: ContactPageComponent
       },
       {
-        path: '**',
-        redirectTo: ''
+        path:'sell',
+        component: SellPageComponent
+      },
+      {
+        path:'explore',
+        component:ExplorePageComponent
       }
     ]
   }

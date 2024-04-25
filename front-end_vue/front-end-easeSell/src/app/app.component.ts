@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from './auth/services/auth.service';
 
 
 @Component({
@@ -8,4 +9,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'front-end-easeSell';
+
+
+  constructor(private authService: AuthService){}
+
+  onUse(){
+    console.log(this.authService.isLoggedIn)
+
+  }
+
 }

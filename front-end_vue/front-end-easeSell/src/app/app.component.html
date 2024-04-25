@@ -1,5 +1,47 @@
+<header class="header">
+  <a routerLink="/" class="header__logo-link">
+    <p class="header__logo-link_name">
+      <span class="header__logo-link_name_bold">Ease</span>Sell
+    </p>
+  </a>
+  <nav class="header__nav">
+    <ul class="nav__list">
+      <li class="nav__item">
+        <a routerLink="/explore" class="nav__link">explore</a>
+      </li>
+      <li class="nav__item">
+        <a routerLink="/sell" class="nav__link">sell</a>
+      </li>
+      <li class="nav__item">
+        <a routerLink="/contact" class="nav__link">contact</a>
+      </li>
+    </ul>
+  </nav>
+  <nav class="header__buttons">
+    <!-- Icono de Dark Mode -->
+    <a class="buttons_DarkMode">
+      <img class="ImagenDarkMode" src="../../../assets/modo-de-sueno.png" alt="darkmode">
+    </a>
+    <button routerLink="/auth/login" class="buttons__login">Login</button>
+    <button routerLink="/auth/new-acount" class="buttons__signup">Sign up</button>
+    <!-- <button *ngIf="user" (click)="goToProfilePage()" class="buttons__user">{{ userData }}</button> -->
+  </nav>
+</header>
+
+
+<!-- *ngIf="!user" (click)="goToLoginPage()" -->
+
+
+
 
 <main>
   <router-outlet />
 </main>
 
+
+<app-footer-component></app-footer-component>
+
+
+
+
+<h1 (click)="onUse()">aaaaaaaaa</h1>
