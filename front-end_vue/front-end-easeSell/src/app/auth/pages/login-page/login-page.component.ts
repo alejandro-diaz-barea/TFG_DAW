@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { Router } from '@angular/router'; // Importa Router desde '@angular/router'
 
 @Component({
   selector: 'app-login-page',
@@ -14,18 +14,18 @@ export class LoginPageComponent {
     password: ['', Validators.required]
   });
 
-  constructor(private authService: AuthService, private fb: FormBuilder) {}
+  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) {} // Utiliza Router en lugar de Route
 
   login(): void {
     const email = this.loginForm.get('email')?.value;
     const password = this.loginForm.get('password')?.value;
 
-    console.log(email,password)
 
     this.authService.login(email, password).subscribe(
       loggedIn => {
         if (loggedIn) {
           console.log('Inicio de sesión exitoso');
+          this.router.navigate(['']);
         } else {
           console.log('Credenciales inválidas');
         }

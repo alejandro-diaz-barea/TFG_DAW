@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './auth/services/auth.service';
+import { User } from './auth/interfaces/user.interfaces';
 
 
 @Component({
@@ -10,11 +11,23 @@ import { AuthService } from './auth/services/auth.service';
 export class AppComponent {
   title = 'front-end-easeSell';
 
+  get user(): boolean{
+    return this.authService.isUserLoggedIn;
+  }
 
-  constructor(private authService: AuthService){}
+  get userInfo(): String |undefined{
+    return this.authService.currentUserInfo?.name;
+  }
+
+  constructor(private authService: AuthService) {
+
+  }
+
+
 
   onUse(){
-    console.log(this.authService.isLoggedIn)
+    console.log(this.user)
+    // console.log(this.infoUser)
 
   }
 
