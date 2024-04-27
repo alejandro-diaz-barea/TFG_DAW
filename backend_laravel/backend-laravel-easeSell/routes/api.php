@@ -7,8 +7,7 @@ use App\Http\Controllers\Api\V1\ChatController;
 use App\Http\Controllers\Api\V1\MessageController;
 use App\Http\Controllers\Api\V1\ProductCategoryController;
 use App\Http\Controllers\Api\V1\UserController;
-
-
+use App\Http\Controllers\Api\V1\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +22,10 @@ use App\Http\Controllers\Api\V1\UserController;
 
 Route::prefix('v1')->group(function () {
     // Rutas de autenticación
-    Route::post('login', [AuthController::class, 'login']);
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::prefix('auth')->group(function () {
+        Route::post('login', [AuthController::class, 'login']);
+        Route::post('logout', [AuthController::class, 'logout']);
+    });
 
     // Rutas de usuarios
     Route::get('users', [UserController::class, 'index']);
