@@ -1,10 +1,13 @@
 <section class="login-container">
   <article class="login-form">
     <h1 class="login_title">Login</h1>
-    <form [formGroup]="loginForm">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
       <input type="email" formControlName="email" class="campo-input campo-email" placeholder="Email">
+      <p class="error-message" *ngIf="loginForm.get('email')?.touched && isFieldEmpty('email')">Email es requerido.</p>
       <input type="password" formControlName="password" class="campo-input campo-password" placeholder="Password">
-      <button type="submit" class="boton-login" (click)="login()">LOGIN</button>
+      <p class="error-message" *ngIf="loginForm.get('password')?.touched && isFieldEmpty('password')">Password es requerido.</p>
+      <button type="submit" class="boton-login">LOGIN</button>
+      <p class="error-message" *ngIf="loginError">{{ loginError }}</p>
       <p class="dontAcount">Don't have an account yet? <a routerLink='/auth/new-acount'>Sign up</a></p>
     </form>
   </article>
