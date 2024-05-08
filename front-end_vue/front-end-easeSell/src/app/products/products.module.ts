@@ -8,6 +8,8 @@ import { ContactPageComponent } from './pages/contact-page/contact-page.componen
 import { SellPageComponent } from './pages/sell-page/sell-page.component';
 import { ExplorePageComponent } from './pages/explore-page/explore-page.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MessagePageComponent } from './pages/message-page/message-page.component';
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 
 
 
@@ -17,7 +19,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     LayoutPageComponent,
     ContactPageComponent,
     SellPageComponent,
-    ExplorePageComponent
+    ExplorePageComponent,
+    MessagePageComponent,
+    ProfilePageComponent
   ],
   imports: [
     CommonModule,

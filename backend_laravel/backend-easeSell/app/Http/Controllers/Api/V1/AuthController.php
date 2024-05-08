@@ -47,6 +47,41 @@ class AuthController extends Controller
     }
 
     /**
+     * Check the validity of a token and return a new token with user info.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function checkToken(Request $request)
+    {
+        // Obtener el token del encabezado de la solicitud
+        $token = $request->bearerToken();
+
+        if (!$token) {
+            return response()->json(['error' => 'Token not provided'], 401);
+        }
+
+        try {
+            // Intenta refrescar el token
+            $newToken = auth()->refresh($token);
+        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+            // Si el token ha expirado, devuelve un error
+            return response()->json(['error' => 'Token expired'], 401);
+        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            // Si el token no es válido, devuelve un error
+            return response()->json(['error' => 'Token invalid'], 401);
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            // Si hay algún otro error JWT, devuelve un error
+            return response()->json(['error' => 'Token error'], 500);
+        }
+
+        // Obtener el usuario asociado con el token
+        $user = auth()->user();
+
+        // Responder con el nuevo token y los detalles del usuario
+        return $this->respondWithToken($newToken, $user);
+    }
+
+    /**
      * Get the authenticated User.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -94,6 +129,8 @@ class AuthController extends Controller
             'user_id' => optional($user)->id,
             'name' => optional($user)->name,
             'address'=> optional($user)->address,
+            'email' => optional($user)->email,
+            'phone' => optional($user)->phone,
         ]);
     }
 }

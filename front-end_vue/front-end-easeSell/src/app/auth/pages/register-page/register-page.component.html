@@ -1,1 +1,18 @@
-<p>register-page works!</p>
+<section class="register-container">
+  <article class="login-form">
+    <h1 class="login_title">Sign up</h1>
+    <form (ngSubmit)="register()" [formGroup]="registerForm">
+      <input type="email" formControlName="email" name="email" class="campo-input campo-email" placeholder="Email" >
+      <!-- <p *ngIf="validationErrors['email']" class="error-message">{{ validationErrors['email'] }}</p> -->
+
+      <input type="password" formControlName="password" name="password" class="campo-input campo-password" placeholder="Password" >
+      <!-- <p *ngIf="validationErrors['password']" class="error-message">{{ validationErrors['password'] }}</p> -->
+
+      <button type="submit" class="boton-login">Sign up</button>
+      <p class="dontAcount">If you already have an account,<a routerLink='/auth/login'> Log in</a></p>
+    </form>
+  </article>
+
+
+  <p>{{registerForm.valid}}</p>
+</section>

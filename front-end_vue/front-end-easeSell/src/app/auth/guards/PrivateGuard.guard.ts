@@ -1,0 +1,31 @@
+import { CanActivateChildFn, Router } from "@angular/router";
+import { AuthService } from "../../auth/services/auth.service";
+import { inject } from "@angular/core";
+
+export const PrivateGuard: CanActivateChildFn = (route, state) =>{
+
+
+
+  const authService = inject(AuthService)
+  const router = inject(Router)
+
+
+  console.log(authService.isUserLoggedIn)
+
+
+  if ( authService.isUserLoggedIn === true){
+    return true
+  }
+
+
+  router.navigate(['/auth/login'])
+
+
+
+  return false
+
+  // get user(): boolean{
+  //   return this.authService.isUserLoggedIn;
+  // }
+
+}

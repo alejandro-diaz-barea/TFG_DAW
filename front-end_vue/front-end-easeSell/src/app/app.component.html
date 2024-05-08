@@ -24,16 +24,15 @@
     </a>
     <button *ngIf=!user routerLink="/auth/login" class="buttons__login">Login</button>
     <button *ngIf=!user routerLink="/auth/new-acount" class="buttons__signup">Sign up</button>
-    <a *ngIf=user class="buttons_DarkMode">
+    <a routerLink="/messages" *ngIf=user class="buttons_DarkMode">
       <img class="ImagenDarkMode" src="../../../assets/comentario.png" alt="darkmode">
     </a>
-    <button *ngIf=user class="buttons__user">{{userInfo}}</button>
+    <button routerLink="/profile" *ngIf=user class="buttons__user">{{userInfo}}</button>
 
   </nav>
 </header>
 
 
-<!-- *ngIf="!user" (click)="goToLoginPage()" -->
 
 
 

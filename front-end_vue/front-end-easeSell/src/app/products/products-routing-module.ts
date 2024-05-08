@@ -5,6 +5,9 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { ContactPageComponent } from './pages/contact-page/contact-page.component';
 import { SellPageComponent } from './pages/sell-page/sell-page.component';
 import { ExplorePageComponent } from './pages/explore-page/explore-page.component';
+import { PrivateGuard } from '../auth/guards';
+import { MessagePageComponent } from './pages/message-page/message-page.component';
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 
 const routes: Routes = [
   {
@@ -20,7 +23,18 @@ const routes: Routes = [
       },
       {
         path:'sell',
+        canActivate:[PrivateGuard],
         component: SellPageComponent
+      },
+      {
+        path:'messages',
+        canActivate:[PrivateGuard],
+        component: MessagePageComponent
+      },
+      {
+        path:'profile',
+        canActivate:[PrivateGuard],
+        component: ProfilePageComponent
       },
       {
         path:'explore',
