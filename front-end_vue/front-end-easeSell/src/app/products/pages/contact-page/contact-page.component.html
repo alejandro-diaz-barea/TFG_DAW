@@ -1,14 +1,13 @@
-<section>
-  <h1 class="titulo">Contact us</h1>
-  <form autocomplete="off" [formGroup]="contact">
-    <input type="email" class="campo-input campo-email" placeholder="Email" formControlName="email" (blur)="validarCampo('email')" />
-    <p *ngIf="contact.get('email')?.invalid && contact.get('email')?.touched" class="mensaje-error">Por favor ingrese un email válido.</p>
-    <input type="text" class="campo-input campo-texto" placeholder="Write a message ..." formControlName="texto" (blur)="validarCampo('texto')">
-    <p *ngIf="contact.get('texto')?.invalid && contact.get('texto')?.touched" class="mensaje-error">Por favor ingrese al menos 10 caracteres.</p>
-    <label>Date of incident: </label>
-    <input type="date" class="campo-input campo-fecha" placeholder="Date" formControlName="fecha" (blur)="validarCampo('fecha')">
-    <p *ngIf="contact.get('fecha')?.invalid && contact.get('fecha')?.touched" class="mensaje-error">Por favor seleccione una fecha válida a partir del 1 de enero de 2024.</p>
-    <button class="boton-enviar" (click)="enviarFormulario()">Enviar</button>
-    <p *ngIf="enviadoConExito" class="mensaje-exito">Entregado con éxito!</p>
+<section class="contact-section">
+  <h1 class="contact-section__title">Contact us !</h1>
+  <form autocomplete="off" [formGroup]="contact" class="contact-form">
+    <input type="email" class="contact-form__input contact-form__input--email" placeholder="Email" formControlName="email" (blur)="validarCampo('email')" />
+    <p *ngIf="contact.get('email')?.invalid && contact.get('email')?.touched" class="contact-form__error">Por favor ingrese un email válido.</p>
+    <input type="text" class="contact-form__input contact-form__input--text" placeholder="Write a message ..." formControlName="texto" (blur)="validarCampo('texto')">
+    <p *ngIf="contact.get('texto')?.invalid && contact.get('texto')?.touched" class="contact-form__error">Por favor ingrese al menos 10 caracteres.</p>
+    <input type="date" class="contact-form__input contact-form__input--date" placeholder="Date of incident:" formControlName="fecha" (blur)="validarCampo('fecha')">
+    <p *ngIf="contact.get('fecha')?.invalid && contact.get('fecha')?.touched" class="contact-form__error">Por favor seleccione una fecha válida a partir del 1 de enero de 2024.</p>
+    <button class="contact-form__button" (click)="enviarFormulario()">Send</button>
+    <p *ngIf="enviadoConExito" class="contact-form__success">Entregado con éxito!</p>
   </form>
 </section>

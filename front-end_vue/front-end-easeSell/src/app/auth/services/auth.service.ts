@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
 import { User } from '../interfaces/user.interfaces';
-import { Observable, of, retry } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CheckTokenResponse } from '../interfaces/check-token.response';
-import { catchError, map } from 'rxjs/operators';
 
 
 @Injectable({ providedIn: 'root' })
@@ -12,7 +8,7 @@ export class AuthService {
   private isLoggedIn: boolean = false;
   private currentUser?: User;
 
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
   get isUserLoggedIn(): boolean {
     return this.isLoggedIn;
@@ -36,14 +32,13 @@ export class AuthService {
       console.log('Response data:', responseData);
 
       if (response.ok) {
-        const { access_token, user, address, id, name } = responseData;
+        const { access_token, address, id, name , email} = responseData;
 
         // Almacena el token en el almacenamiento local del navegador
         localStorage.setItem('accessToken', access_token);
 
-        this.currentUser = { ...user, access_token, address, id, name };
+        this.currentUser = { access_token, address, id, name, email };
 
-        console.log(this.currentUser)
         this.isLoggedIn = true;
         return true;
       } else {
@@ -72,8 +67,15 @@ export class AuthService {
       if (response.ok) {
         return { success: true };
       } else {
-        console.error('Error during registration:', responseData.error);
-        return { success: false, errors: responseData.message };
+        if (response.status === 422) {
+          // Error de validación, extraer errores del cuerpo de la respuesta
+          const validationErrors = responseData['message']; // Acceso seguro con corchetes
+          return { success: false, errors: validationErrors };
+        } else {
+          // Otro tipo de error
+          console.error('Error during registration:', responseData.error);
+          return { success: false, errors: { general: 'Error during registration' } };
+        }
       }
     } catch (error) {
       console.error('Error during registration:', error);
@@ -81,45 +83,54 @@ export class AuthService {
     }
   }
 
-  // checkAuthStatus(): Observable<boolean> {
-  //   const url = 'http://127.0.0.1:8000/api/v1/auth/checktoken';
-  //   const token = localStorage.getItem('accessToken');
 
-  //   if (!token) {
-  //     // Si no hay token en el almacenamiento local, el usuario no está autenticado
-  //     return of(false);
-  //   }
+  //Mantener sesion
+  async checkAuthStatus(): Promise<boolean> {
+    const url = 'http://127.0.0.1:8000/api/v1/auth/checktoken';
+    const token = localStorage.getItem('accessToken');
 
-  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    if (!token) {
+      // Si no hay token en el local, el usuario no está autenticado
+      return false;
+    }
 
-  //   return this.http.get<CheckTokenResponse>(url, { headers }).pipe(
-  //     map(response => {
-  //       const { token, user } = response;
-  //       if (token && user) {
-  //         // Actualiza el token en el almacenamiento local
-  //         localStorage.setItem('accessToken', token);
-  //         // Actualiza el usuario actual con los datos recibidos
-  //         this.currentUser= {
-  //           id: user.id,
-  //           name: user.name,
-  //           email: user.email,
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
 
-  //           // Agrega aquí el resto de los campos que desees
-  //         };
-  //         this.isLoggedIn = true;
-  //         return true;
-  //       } else {
-  //         return false;
-  //       }
-  //     }),
-  //     catchError(() => {
-  //       // En caso de error, el usuario no está autenticado
-  //       this.isLoggedIn = false;
-  //       this.currentUser = undefined;
-  //       return of(false);
-  //     })
-  //   );
-  // }
+      if (response.ok) {
+        const responseData = await response.json();
+        const { access_token, id, name, address, email } = responseData;
+        if (access_token && id && name && address && email) {
+          // Actualiza el token en el localstorage
+          localStorage.setItem('accessToken', access_token);
+          // Actualiza el usuario actual
+          this.currentUser = { id, name, email, access_token, address };
+          this.isLoggedIn = true;
+          return true;
+        }
+      } else {
+        // En caso de respuesta no exitosa, no está autenticado
+        this.isLoggedIn = false;
+        this.currentUser = undefined;
+        return false;
+      }
+    } catch (error) {
+      console.error('Error during checkAuthStatus:', error);
+      // En caso de error, no está autenticado
+      this.isLoggedIn = false;
+      this.currentUser = undefined;
+      return false;
+    }
+
+    return false;
+  }
+
+
 
   logout(): void {
     // Elimina el token del almacenamiento local al cerrar sesión

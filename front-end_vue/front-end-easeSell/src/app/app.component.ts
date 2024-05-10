@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthService } from './auth/services/auth.service';
 
 @Component({
@@ -9,6 +9,8 @@ import { AuthService } from './auth/services/auth.service';
 export class AppComponent {
   title = 'front-end-easeSell';
 
+  private authService = inject(AuthService)
+
   get user(): boolean{
     return this.authService.isUserLoggedIn;
   }
@@ -16,12 +18,6 @@ export class AppComponent {
   get userInfo(): String |undefined{
     return this.authService.currentUserInfo?.name;
   }
-
-  constructor(private authService: AuthService) {
-
-  }
-
-
 
   onUse(){
     console.log(this.user)

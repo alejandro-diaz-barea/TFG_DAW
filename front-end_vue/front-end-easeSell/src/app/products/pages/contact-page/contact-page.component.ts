@@ -10,7 +10,7 @@ export class ContactPageComponent {
   public contact: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     texto: ['', [Validators.required, Validators.minLength(10)]],
-    fecha: ['', [this.validarFecha]]
+    fecha: ['', [this.validarFecha, Validators.required]]
   });
   public enviadoConExito: boolean = false;
 

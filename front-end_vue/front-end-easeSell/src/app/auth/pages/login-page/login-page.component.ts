@@ -13,7 +13,7 @@ export class LoginPageComponent {
     email: [''],
     password: ['']
   });
-  public loginError: string = ''; // Variable para almacenar el mensaje de error
+  public loginError: string = '';
 
   constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) {}
 
@@ -21,13 +21,11 @@ export class LoginPageComponent {
     const email = this.loginForm.get('email')?.value;
     const password = this.loginForm.get('password')?.value;
 
-    // Validar manualmente los campos antes de iniciar sesión
     if (!email.trim() || !password.trim()) {
       this.loginError = 'Por favor, complete todos los campos.';
       return;
     }
 
-    // Limpiar mensaje de error antes de intentar iniciar sesión
     this.loginError = '';
 
     this.authService.login(email, password)
@@ -46,7 +44,6 @@ export class LoginPageComponent {
   }
 
 
-  // Función para validar si un campo está vacío
   isFieldEmpty(fieldName: string): boolean {
     const fieldValue = this.loginForm.get(fieldName)?.value;
     return !fieldValue.trim();
