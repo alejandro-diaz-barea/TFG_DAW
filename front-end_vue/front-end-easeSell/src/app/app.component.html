@@ -1,46 +1,52 @@
-<header class="header">
-  <a routerLink="/" class="header__logo-link">
-    <p class="header__logo-link_name">
-      <span class="header__logo-link_name_bold">Ease</span>Sell
-    </p>
-  </a>
-  <nav class="header__nav">
-    <ul class="nav__list">
-      <li class="nav__item">
-        <a routerLink="/explore" class="nav__link">explore</a>
-      </li>
-      <li class="nav__item">
-        <a routerLink="/sell" class="nav__link">sell</a>
-      </li>
-      <li class="nav__item">
-        <a routerLink="/contact" class="nav__link">contact</a>
-      </li>
-    </ul>
-  </nav>
-  <nav class="header__buttons">
-    <!-- Icono de Dark Mode -->
-    <a class="buttons_DarkMode">
-      <img class="ImagenDarkMode" src="../../../assets/modo-de-sueno.png" alt="darkmode">
+
+<ng-container *ngIf="authChecked">
+  <header class="header" >
+    <a routerLink="/" class="header__logo-link">
+      <p class="header__logo-link_name">
+        <span class="header__logo-link_name_bold">Ease</span>Sell
+      </p>
     </a>
-    <button *ngIf=!user routerLink="/auth/login" class="buttons__login">Login</button>
-    <button *ngIf=!user routerLink="/auth/new-acount" class="buttons__signup">Sign up</button>
-    <a routerLink="/messages" *ngIf=user class="buttons_DarkMode">
-      <img class="ImagenDarkMode" src="../../../assets/comentario.png" alt="darkmode">
-    </a>
-    <button routerLink="/profile" *ngIf=user class="buttons__user">{{userInfo}}</button>
+    <nav class="header__nav">
+      <ul class="nav__list">
+        <li class="nav__item">
+          <a routerLink="/explore" class="nav__link">explore</a>
+        </li>
+        <li class="nav__item">
+          <a routerLink="/sell" class="nav__link">sell</a>
+        </li>
+        <li class="nav__item">
+          <a routerLink="/contact" class="nav__link">contact</a>
+        </li>
+      </ul>
+    </nav>
+    <nav class="header__buttons">
+      <!-- Icono de Dark Mode -->
+      <a class="buttons_DarkMode">
+        <img class="ImagenDarkMode" src="../../../assets/modo-de-sueno.png" alt="darkmode">
+      </a>
+      <button *ngIf=!user routerLink="/auth/login" class="buttons__login">Login</button>
+      <button *ngIf=!user routerLink="/auth/new-acount" class="buttons__signup">Sign up</button>
+      <a routerLink="/messages" *ngIf=user class="buttons_DarkMode">
+        <img class="ImagenDarkMode" src="../../../assets/comentario.png" alt="darkmode">
+      </a>
+      <button routerLink="/profile" *ngIf=user class="buttons__user">{{userInfo}}</button>
 
-  </nav>
-</header>
+    </nav>
+  </header>
+
+
+  <main>
+    <router-outlet />
+  </main>
+
+
+  <app-footer-component></app-footer-component>
+
+
+</ng-container>
 
 
 
-
-<main>
-  <router-outlet />
-</main>
-
-
-<app-footer-component></app-footer-component>
-
-
-
+<div *ngIf="!authChecked">
+  <p>Cargando...</p>
+</div>

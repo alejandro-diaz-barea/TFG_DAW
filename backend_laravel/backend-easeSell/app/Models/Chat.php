@@ -10,8 +10,8 @@ class Chat extends Model
     use HasFactory;
 
     protected $fillable = [
-        'IDUsuario1',
-        'IDUsuario2',
+        'idusuario1',
+        'idusuario2',
     ];
 
     public function users()

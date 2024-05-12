@@ -14,7 +14,7 @@ export const PublicGuard: CanActivateChildFn = (route, state) =>{
 
 
   if ( authService.isUserLoggedIn === true){
-    router.navigate(['/'])
+    router.navigate(['/explore'])
     return false
   }
 

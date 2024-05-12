@@ -1,20 +1,33 @@
 <?php
 
 namespace App\Http\Controllers\Api\V1;
-
 use App\Models\Message;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     /**
-     * Display a listing of the messages.
+     * Display a listing of the messages for a specific chat.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $messages = Message::all();
+        $chat_id = $request->input('chat_id');
+
+        // Verificar si el ID del chat está presente en la solicitud
+        if (!$chat_id) {
+            return response()->json(['error' => 'Se requiere el ID del chat.'], 400);
+        }
+
+        // Obtener los mensajes del chat especificado
+        $messages = Message::where('idchat', $chat_id)->get();
         return response()->json($messages);
     }
 

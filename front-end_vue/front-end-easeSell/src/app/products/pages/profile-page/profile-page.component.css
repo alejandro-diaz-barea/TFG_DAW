@@ -7,6 +7,12 @@
   margin-left: 200px;
   margin-right: 200px;
   border-radius: 20px;
-
-
+  text-align: center;
+  padding: 15px;
 }
+
+.section-profile__title{
+  font-size: 2rem;
+}
+
+
