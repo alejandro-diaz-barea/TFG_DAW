@@ -1,5 +1,47 @@
-
-
 <section class="section-sell">
+  <h1>Upload products</h1>
+  <form [formGroup]="productForm" (submit)="onSubmit($event)">
+    <input placeholder="name" type="text" formControlName="name">
+    <input placeholder="description" type="text" formControlName="description">
+    <input placeholder="price" type="number" formControlName="price">
 
+    <input placeholder="Filter" type="text" #filterInput>
+    <button type="button" (click)="addFilter(filterInput.value)">Add Filter</button>
+
+    <div>
+      <div *ngFor="let filter of product.categories; let i = index">
+        <div class="filter-wrapper">
+          <span (click)="removeFilter(i)">X</span>
+          <span>{{ filter }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dropzone">
+      <div class="text-wrapper">
+        Drag and drop or <a (click)="selectFile.click()" class="browse-button">browse</a> a file
+      </div>
+    </div>
+
+    <input
+      multiple
+      type="file"
+      #selectFile
+      value="select"
+      style="display:none"
+      (change)="onFileSelected($event)"
+    />
+
+    <div>
+      <div>
+        <div *ngFor="let file of product.productImages; let i = index">
+          <div class="image-wrapper">
+            <span (click)="removeImage(i)">X</span>
+            <img [src]="file.url" alt="Product Image" class="foto">
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="submit">Upload</button>
+  </form>
 </section>

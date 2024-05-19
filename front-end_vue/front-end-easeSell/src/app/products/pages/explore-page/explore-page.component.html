@@ -1,1 +1,25 @@
-<p>explore-page works!</p>
+<section class="explore-section">
+  <div class="sidebar">
+    <app-search-bar (searchEvent)="searchProducts($event)"></app-search-bar>
+    <app-dropdown (orderChange)="onOrderChange($event)"></app-dropdown>
+  </div>
+
+  <div class="productos">
+    <div *ngIf="!(products$ | async)">
+      <p>Cargando...</p>
+    </div>
+
+    <div *ngFor="let product of (filteredProducts$ | async)" >
+      <div class="container">
+        <h2>{{ product?.name }}</h2>
+        <p>Description: {{ product?.description }}</p>
+        <p>Price: ${{ product?.price }}</p>
+        <div *ngFor="let imageUrl of product?.productImages">
+          <img class="img" [src]="imageUrl" alt="Product Image">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-pagination [totalPages]="totalPages" (pageChanged)="loadProducts($event)"></app-pagination>
+</section>

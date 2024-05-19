@@ -27,7 +27,6 @@
       <input type="text" formControlName="phone_number" class="register-form__input" placeholder="Phone number" (blur)="validateField('phone_number')">
       <p *ngIf="validationErrors.phone_number" class="register-form__error-message">{{ validationErrors.phone_number }}</p>
 
-      <!-- Mostrar mensaje de error general -->
       <p *ngIf="registerForm.errors && registerForm.errors['message']" class="register-form__error-message">{{ registerForm.errors['message'] }}</p>
 
       <button type="submit" class="register-form__button">Sign up</button>

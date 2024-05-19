@@ -1,0 +1,22 @@
+.explore-section{
+  min-height: 100vh;
+  padding: 50px;
+}
+
+
+.sidebar{
+  height: 35px;
+  display: flex;
+  justify-content: space-around;
+}
+
+
+.container{
+  background-color: rgba(0, 0, 0, 0.379);
+
+}
+
+
+.img{
+  width: 50px;
+}

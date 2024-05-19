@@ -10,8 +10,8 @@ class ProductCategory extends Model
     use HasFactory;
 
     protected $fillable = [
-        'IDProduct',
-        'IDCategory',
+        'product_id',
+        'category_id',
     ];
 
     public $timestamps = false;

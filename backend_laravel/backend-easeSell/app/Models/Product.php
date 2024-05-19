@@ -10,21 +10,10 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'description',
-        'price',
-        'state',
-        'date',
-        'IDSeller',
+        'name', 'description', 'price', 'seller_id', 'date', 'image_path'
     ];
 
-    public function seller()
-    {
-        return $this->belongsTo(User::class, 'IDSeller');
-    }
-
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class, 'product_categories', 'IDProduct', 'IDCategory');
-    }
+    protected $casts = [
+        'image_path' => 'array',
+    ];
 }

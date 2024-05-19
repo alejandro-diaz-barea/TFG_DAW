@@ -10,6 +10,10 @@ import { ExplorePageComponent } from './pages/explore-page/explore-page.componen
 import { ReactiveFormsModule } from '@angular/forms';
 import { MessagePageComponent } from './pages/message-page/message-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
+import { MyProductsPageComponent } from './pages/my-products-page/my-products-page.component';
 
 
 
@@ -21,7 +25,11 @@ import { ProfilePageComponent } from './pages/profile-page/profile-page.componen
     SellPageComponent,
     ExplorePageComponent,
     MessagePageComponent,
-    ProfilePageComponent
+    ProfilePageComponent,
+    SearchBarComponent,
+    DropdownComponent,
+    PaginationComponent,
+    MyProductsPageComponent,
   ],
   imports: [
     CommonModule,

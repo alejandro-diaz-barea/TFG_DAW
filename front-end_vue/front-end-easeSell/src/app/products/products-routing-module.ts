@@ -8,6 +8,7 @@ import { ExplorePageComponent } from './pages/explore-page/explore-page.componen
 import { PrivateGuard } from '../auth/guards';
 import { MessagePageComponent } from './pages/message-page/message-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { MyProductsPageComponent } from './pages/my-products-page/my-products-page.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,11 @@ const routes: Routes = [
         path:'profile',
         canActivate:[PrivateGuard],
         component: ProfilePageComponent
+      },
+      {
+        path:'my-products',
+        canActivate:[PrivateGuard],
+        component: MyProductsPageComponent
       },
       {
         path:'explore',
