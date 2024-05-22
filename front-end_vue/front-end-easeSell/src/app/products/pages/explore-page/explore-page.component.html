@@ -1,25 +1,28 @@
 <section class="explore-section">
   <div class="sidebar">
     <app-search-bar (searchEvent)="searchProducts($event)"></app-search-bar>
+    <button (click)="toggleFilterPopup()">Filter</button>
     <app-dropdown (orderChange)="onOrderChange($event)"></app-dropdown>
   </div>
 
-  <div class="productos">
+  <div class="cards-container">
     <div *ngIf="!(products$ | async)">
       <p>Cargando...</p>
     </div>
 
-    <div *ngFor="let product of (filteredProducts$ | async)" >
-      <div class="container">
+    <div *ngFor="let product of (filteredProducts$ | async)" class="card">
         <h2>{{ product?.name }}</h2>
         <p>Description: {{ product?.description }}</p>
         <p>Price: ${{ product?.price }}</p>
         <div *ngFor="let imageUrl of product?.productImages">
           <img class="img" [src]="imageUrl" alt="Product Image">
         </div>
-      </div>
     </div>
   </div>
 
-  <app-pagination [totalPages]="totalPages" (pageChanged)="loadProducts($event)"></app-pagination>
+ <app-pagination class="pagination" [totalPages]="totalPages" (pageChanged)="loadProducts($event)"></app-pagination>
 </section>
+
+<div *ngIf="showFilterPopup" class="filter-popup-overlay">
+  <app-filters (closePopup)="toggleFilterPopup()" (filterApplied)="handleFilterApplied($event)"></app-filters>
+</div>

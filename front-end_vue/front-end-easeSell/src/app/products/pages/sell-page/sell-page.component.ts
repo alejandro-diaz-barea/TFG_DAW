@@ -9,6 +9,7 @@ import { Product } from '../../interfaces/product.interface';
   templateUrl: './sell-page.component.html',
   styleUrls: ['./sell-page.component.css']
 })
+
 export class SellPageComponent {
   product: Product = {
     name: "",
@@ -20,6 +21,13 @@ export class SellPageComponent {
   };
 
   productForm: FormGroup;
+  fieldErrors: { [key: string]: boolean } = {
+    name: false,
+    description: false,
+    price: false
+  };
+  successMessage: string = '';
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -28,8 +36,17 @@ export class SellPageComponent {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      price: ['', [Validators.required]]
+      price: ['', Validators.required]
     });
+  }
+
+  validateField(fieldName: string) {
+    const control = this.productForm.get(fieldName);
+    if (control && control.invalid && control.errors?.['required']) {
+      this.fieldErrors[fieldName] = true;
+    } else {
+      this.fieldErrors[fieldName] = false;
+    }
   }
 
   onFileSelected(event: any) {
@@ -52,9 +69,6 @@ export class SellPageComponent {
     }
   }
 
-
-
-
   removeFilter(index: number) {
     this.product.categories.splice(index, 1);
   }
@@ -62,7 +76,7 @@ export class SellPageComponent {
   onSubmit(event: Event) {
     event.preventDefault();
 
-    if (this.productForm.invalid) {
+    if (this.productForm.invalid || this.product.categories.length === 0 || this.product.productImages.length === 0) {
       console.error('El formulario no es válido.');
       return;
     }
@@ -91,9 +105,22 @@ export class SellPageComponent {
 
       this.http.post<any>('http://127.0.0.1:8000/api/v1/products', formData, { headers }).subscribe(
         response => {
-          console.log('Producto creado:', response);
+          console.log("Product create :"+ response)
+          this.successMessage = 'Producto creado con éxito';
+          this.errorMessage = '';
+          this.productForm.reset();
+          this.product = {
+            name: "",
+            description: "",
+            price: 0,
+            productImages: [],
+            categories: [],
+            image_path:""
+          };
         },
         error => {
+          this.errorMessage = 'Error al crear el producto. Por favor, inténtelo de nuevo más tarde.';
+          this.successMessage = '';
           console.error('Error al crear el producto:', error);
         }
       );

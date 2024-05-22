@@ -16,9 +16,7 @@ export class SearchBarComponent {
   });
 
   onSearch(): void {
-    const searchTerm = this.searchForm.get('searcher')?.value;
-    if (searchTerm) {
-      this.searchEvent.emit(searchTerm);
-    }
+    const searchTerm = this.searchForm.get('searcher')?.value || '';
+    this.searchEvent.emit(searchTerm);
   }
 }

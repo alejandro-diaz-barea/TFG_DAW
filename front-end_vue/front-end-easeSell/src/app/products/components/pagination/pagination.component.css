@@ -15,12 +15,12 @@
   border: 1px solid #dee2e6;
   border-radius: 0.7rem;
   cursor: pointer;
-  background-color: #cacaca;
+  background-color:  rgba(39, 110, 144, 0.4);
 
 }
 
 .page-link:hover {
-  background-color: #e9ecef;
+  background-color: rgba(39, 111, 144, 0.772);
 }
 
 .page-link:focus {

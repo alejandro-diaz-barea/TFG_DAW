@@ -14,39 +14,53 @@ class ProductController extends Controller
 {
     // Paginación y búsqueda de productos
     public function index(Request $request)
-    {
-        // Captura del término de búsqueda si existe
-        $search = $request->input('search');
+{
+    $search = $request->input('search');
+    $orderBy = $request->input('orderby');
+    $categories = $request->input('categories', []);
 
-        // Captura del filtro si existe
-        $filter = $request->input('filter');
+    $query = Product::query();
 
-        // Consulta base de productos
-        $query = Product::query();
+    // Incluir las categorías de los productos en la consulta
+    $query->with('categories');
 
-        // Aplicar búsqueda si existe
-        if ($search) {
-            $query->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
-        }
-
-        // Aplicar filtro si existe
-        if ($filter === 'price') {
-            $query->orderBy('price', 'asc');
-        } elseif ($filter === 'title') {
-            $query->orderBy('name', 'asc');
-        }
-
-        // Paginación
-        $products = $query->paginate(8);
-
-        return response()->json([
-            'data' => $products,
-            'total_pages' => $products->lastPage()
-        ]);
+    if ($search) {
+        $query->where('name', 'like', "%{$search}%")
+            ->orWhere('description', 'like', "%{$search}%");
     }
 
-    
+    if ($orderBy === 'price') {
+        $query->orderBy('price', 'asc');
+    } elseif ($orderBy === 'title') {
+        $query->orderBy('name', 'asc');
+    }
+
+    // Filtrar por categorías seleccionadas
+    // Filtrar por categorías seleccionadas
+    if (!empty($categories)) {
+        // Asegúrate de que $categories sea un array
+        if (is_array($categories)) {
+            $query->whereHas('categories', function ($query) use ($categories) {
+                $query->whereIn('category_id', $categories);
+            });
+        } else {
+            // Si $categories no es un array, probablemente necesites manejar este caso de manera especial.
+            // Por ejemplo, si solo se proporciona una categoría como una cadena en lugar de un array.
+            $query->whereHas('categories', function ($query) use ($categories) {
+            $query->whereIn('category_id', [$categories]); // Convertir $categories en un array
+        });
+    }
+}
+
+
+    $products = $query->paginate(8);
+
+    return response()->json([
+        'data' => $products,
+        'total_pages' => $products->lastPage()
+    ]);
+}
+
     // Crear producto
     public function store(Request $request)
     {

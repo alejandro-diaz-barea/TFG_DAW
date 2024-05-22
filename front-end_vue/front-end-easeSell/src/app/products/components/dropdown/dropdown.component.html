@@ -1,4 +1,4 @@
-<select id="orderBy" class="order-selector__select">
+<select (change)="onOrderChange($event)" class="order-selector__select">
   <option value="">ORDER BY</option>
   <option value="price">PRICE</option>
   <option value="title">NAME</option>

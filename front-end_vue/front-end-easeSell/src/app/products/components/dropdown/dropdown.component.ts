@@ -7,10 +7,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class DropdownComponent {
   @Output() orderChange: EventEmitter<string> = new EventEmitter<string>();
-  orderBy: string = '';
 
-  onOrderChange(value: string): void {
-    this.orderBy = value;
+  onOrderChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
     this.orderChange.emit(value);
   }
 }

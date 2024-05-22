@@ -14,6 +14,7 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { MyProductsPageComponent } from './pages/my-products-page/my-products-page.component';
+import { FiltersComponent } from './components/filters/filters.component';
 
 
 
@@ -30,6 +31,7 @@ import { MyProductsPageComponent } from './pages/my-products-page/my-products-pa
     DropdownComponent,
     PaginationComponent,
     MyProductsPageComponent,
+    FiltersComponent,
   ],
   imports: [
     CommonModule,

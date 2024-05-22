@@ -83,6 +83,12 @@ nav.header__nav {
 
 }
 
+.buttons__user{
+  border-radius: 25px;
+  border-color: white;
+  height: 1.5rem;
+  cursor: pointer;
+}
 .ImagenDarkMode {
   max-width: 100%;
   max-height: 100%;
