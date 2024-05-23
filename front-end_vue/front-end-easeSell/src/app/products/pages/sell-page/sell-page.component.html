@@ -2,50 +2,57 @@
   <h1 class="section-sell__title">Upload products</h1>
 
   <form [formGroup]="productForm" (submit)="onSubmit($event)" class="form">
-    <input placeholder="Product name" type="text" formControlName="name" class="input input--text" (blur)="validateField('name')">
-    <p *ngIf="fieldErrors['name']" class="error-message error-message--visible">Este campo es requerido.</p>
+    <label>
+      <input placeholder="Product name" type="text" formControlName="name" class="input input--text" (blur)="validateField('name')">
+      <p *ngIf="fieldErrors['name'] || (formSubmitted && !productForm.controls['name'].valid)" class="error-message error-message--visible">This field is required.</p>
+    </label>
 
-    <input placeholder="Description..." type="text" formControlName="description" class="input input--text" (blur)="validateField('description')">
-    <p *ngIf="fieldErrors['description']" class="error-message error-message--visible">Este campo es requerido.</p>
+    <label>
+      <input placeholder="Description..." type="text" formControlName="description" class="input input--text" (blur)="validateField('description')">
+      <p *ngIf="fieldErrors['description'] || (formSubmitted && !productForm.controls['description'].valid)" class="error-message error-message--visible">This field is required.</p>
+    </label>
 
-    <input placeholder="Price" type="number" formControlName="price" class="input input--number" (blur)="validateField('price')">
-    <p *ngIf="fieldErrors['price']" class="error-message error-message--visible">Este campo es requerido.</p>
+    <label>
+      <input placeholder="Price" type="number" formControlName="price" class="input input--number" (blur)="validateField('price')">
+      <p *ngIf="fieldErrors['price'] || (formSubmitted && !productForm.controls['price'].valid)" class="error-message error-message--visible">This field is required.</p>
+    </label>
 
-    <div class="filter-group">
-      <input placeholder="Filter" type="text" #filterInput class="filter-input">
+    <fieldset class="filter-group">
+      <input placeholder="Filters" type="text" #filterInput class="filter-input">
       <button type="button" (click)="addFilter(filterInput.value)" class="filter-button">Add Filter</button>
-    </div>
-    <p *ngIf="!product.categories.length" class="error-message error-message--visible">Al menos un filtro es requerido.</p>
 
+    </fieldset>
     <div class="filters">
-      <div *ngFor="let filter of product.categories; let i = index" class="filter-wrapper">
-        <span (click)="removeFilter(i)" class="remove-filter">X</span>
+      <span *ngFor="let filter of product.categories; let i = index" class="filter-wrapper">
+        <button type="button" (click)="removeFilter(i)" class="remove-filter">X</button>
         <span>{{ filter }}</span>
-      </div>
+      </span>
     </div>
+    <p *ngIf="!product.categories.length && formSubmitted || filterError" class="error-message error-message--visible">At least one filter is required.</p>
 
-    <div class="dropzone">
+
+    <section class="dropzone">
       <div class="text-wrapper">
         Drag and drop or <a (click)="selectFile.click()" class="browse-button">browse</a> a file
       </div>
-    </div>
+    </section>
 
     <input
-    multiple
-    type="file"
-    #selectFile
-    style="display:none"
-    (change)="onFileSelected($event)"
-  />
+      multiple
+      type="file"
+      #selectFile
+      style="display:none"
+      (change)="onFileSelected($event)"
+    />
 
-    <p *ngIf="!product.productImages.length" class="error-message error-message--visible">Al menos una foto es requerida.</p>
+    <p *ngIf="!product.productImages.length && formSubmitted" class="error-message error-message--visible">At least one photo is required.</p>
 
-    <div class="images">
-      <div *ngFor="let file of product.productImages; let i = index" class="image-wrapper">
-        <span (click)="removeImage(i)" class="remove-image">X</span>
+    <section class="images">
+      <figure *ngFor="let file of product.productImages; let i = index" class="image-wrapper">
+        <button type="button" (click)="removeImage(i)" class="remove-image">X</button>
         <img [src]="file.url" alt="Product Image" class="foto">
-      </div>
-    </div>
+      </figure>
+    </section>
 
     <button type="submit" class="submit-button">Upload product</button>
 

@@ -14,52 +14,60 @@ class ProductController extends Controller
 {
     // Paginación y búsqueda de productos
     public function index(Request $request)
-{
-    $search = $request->input('search');
-    $orderBy = $request->input('orderby');
-    $categories = $request->input('categories', []);
+    {
+        $search = $request->input('search');
+        $orderBy = $request->input('orderby');
+        $categories = $request->input('categories', []);
 
-    $query = Product::query();
+        $query = Product::query()->with('categories');
 
-    // Incluir las categorías de los productos en la consulta
-    $query->with('categories');
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+        }
 
-    if ($search) {
-        $query->where('name', 'like', "%{$search}%")
-            ->orWhere('description', 'like', "%{$search}%");
-    }
+        if ($orderBy === 'price') {
+            $query->orderBy('price', 'asc');
+        } elseif ($orderBy === 'title') {
+            $query->orderBy('name', 'asc');
+        }
 
-    if ($orderBy === 'price') {
-        $query->orderBy('price', 'asc');
-    } elseif ($orderBy === 'title') {
-        $query->orderBy('name', 'asc');
-    }
-
-    // Filtrar por categorías seleccionadas
-    // Filtrar por categorías seleccionadas
-    if (!empty($categories)) {
-        // Asegúrate de que $categories sea un array
-        if (is_array($categories)) {
+        if (!empty($categories)) {
             $query->whereHas('categories', function ($query) use ($categories) {
                 $query->whereIn('category_id', $categories);
             });
-        } else {
-            // Si $categories no es un array, probablemente necesites manejar este caso de manera especial.
-            // Por ejemplo, si solo se proporciona una categoría como una cadena en lugar de un array.
-            $query->whereHas('categories', function ($query) use ($categories) {
-            $query->whereIn('category_id', [$categories]); // Convertir $categories en un array
-        });
+        }
+
+        $products = $query->paginate(8);
+
+        if ($products->isEmpty()) {
+            return response()->json(['message' => 'No se encontraron productos con los criterios de búsqueda especificados.'], 404);
+        }
+
+        return response()->json([
+            'data' => $products,
+            'total_pages' => $products->lastPage()
+        ]);
     }
-}
+
+    // Obtener productos de un usuario específico
+    public function getUserProducts(Request $request)
+    {
+        // Obtener el ID del usuario autenticado
+        $userId = auth()->id();
+
+        // Obtener los productos del usuario
+        $products = Product::where('seller_id', $userId)->get();
+
+        if ($products->isEmpty()) {
+            return response()->json(['message' => 'El usuario no tiene productos asociados.'], 404);
+        }
+
+        return response()->json(['data' => $products]);
+    }
 
 
-    $products = $query->paginate(8);
 
-    return response()->json([
-        'data' => $products,
-        'total_pages' => $products->lastPage()
-    ]);
-}
 
     // Crear producto
     public function store(Request $request)

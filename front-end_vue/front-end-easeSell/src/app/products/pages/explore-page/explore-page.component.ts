@@ -14,11 +14,13 @@ export class ExplorePageComponent implements OnInit {
   products$: Observable<Product[]> = of([]);
   filteredProducts$: Observable<Product[]> = of([]);
   totalPages: number = 1;
+  currentPage: number = 1;
   searchTerm: string = '';
   orderBy: string = '';
   categories: Category[] = [];
   selectedCategories: number[] = [];
   showFilterPopup: boolean = false;
+  errorMessage: string = '';
 
   constructor(private http: HttpClient) { }
 
@@ -27,6 +29,7 @@ export class ExplorePageComponent implements OnInit {
   }
 
   loadProducts(page: number): void {
+    this.currentPage = page;
     let params = `?page=${page}`;
     if (this.searchTerm) {
       params += `&search=${this.searchTerm}`;
@@ -40,14 +43,20 @@ export class ExplorePageComponent implements OnInit {
 
     this.http.get<any>(`http://127.0.0.1:8000/api/v1/products${params}`).pipe(
       tap((response: any) => {
-        this.totalPages = response.total_pages;
+        if (response && response.data && Array.isArray(response.data.data)) {
+          this.totalPages = response.total_pages;
+          this.errorMessage = ''; // Reset error message if data is received successfully
+        } else {
+          this.errorMessage = 'No products found matching the specified criteria.';
+        }
       }),
       map((response: any) => {
         if (response.data && Array.isArray(response.data.data)) {
           return response.data.data.map((product: Product) => ({
             ...product,
+            currentImageIndex: 0,
             productImages: JSON.parse(product.image_path).map((imagePath: string) =>
-              'http://127.0.0.1:8000' + imagePath.replace('\/storage', '/storage')
+              'http://127.0.0.1:8000' + imagePath.replace('/storage', '/storage')
             )
           }));
         } else {
@@ -57,13 +66,19 @@ export class ExplorePageComponent implements OnInit {
       }),
       catchError(error => {
         console.error('Error fetching products:', error);
+        this.errorMessage = 'Products not found';
         return of([]);
       })
     ).subscribe((products: Product[]) => {
       this.products$ = of(products);
       this.filteredProducts$ = of(products);
+    }, error => {
+      // Handle HTTP request error here
+      console.error('HTTP request error:', error);
+      this.errorMessage = 'Products not found';
     });
   }
+
 
   searchProducts(searchTerm: string): void {
     this.searchTerm = searchTerm;
@@ -87,5 +102,13 @@ export class ExplorePageComponent implements OnInit {
   handleFilterApplied(selectedCategories: number[]): void {
     this.selectedCategories = selectedCategories;
     this.loadProducts(1);
+  }
+
+  nextImage(product: Product): void {
+    if (product.currentImageIndex !== undefined) {
+      product.currentImageIndex = (product.currentImageIndex + 1) % product.productImages.length;
+    } else {
+      product.currentImageIndex = 0;
+    }
   }
 }

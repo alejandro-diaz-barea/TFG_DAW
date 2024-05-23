@@ -82,7 +82,6 @@
   display: block;
 }
 
-
 .filter-group {
   display: flex;
   align-items: center;
@@ -169,8 +168,8 @@
 
 .submit-button {
   width: 200px;
-  background-color: rgba(255, 255, 255, 0.4);
-  color: rgb(0, 0, 0);
+  background-color: #276e90;
+  color: white;
   padding: 10px 20px;
   margin-top: 20px;
   border: none;
@@ -181,7 +180,7 @@
 }
 
 .submit-button:hover {
-  background-color: #1d50676e;
+  background-color: #1d4f67;
 }
 
 .success-message {
@@ -192,37 +191,40 @@
 .success-message--visible,
 .error-message--visible {
   display: block;
+  text-align: center;
 }
+
 
 @media only screen and (max-width: 600px) {
   .section-sell {
     padding: 10px;
-    max-width: 100%;
+    max-width: 90%;
   }
 
   .dropzone {
-    width: 90%;
+  width: 270px;
   }
 
   .input {
-    width: 90%;
+    width: 250px;
   }
 
   .filter-group {
-    width: 100%;
+    width: 270px;
     max-width: none;
     flex-wrap: wrap;
   }
 
   .filter-input {
-    width: 70%;
+    width: 60%;
     margin-right: 0;
   }
 
   .filter-button {
     width: 30%;
   }
+  .filter-button {
+    padding: 0px;
+    font-size: 11px;
+  }
 }
-
-
-

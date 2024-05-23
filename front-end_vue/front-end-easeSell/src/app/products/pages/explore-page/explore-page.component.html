@@ -1,26 +1,37 @@
+
 <section class="explore-section">
-  <div class="sidebar">
+  <aside class="sidebar">
     <app-search-bar (searchEvent)="searchProducts($event)"></app-search-bar>
-    <button (click)="toggleFilterPopup()">Filter</button>
+    <button (click)="toggleFilterPopup()" class="filter-button">Filter</button>
     <app-dropdown (orderChange)="onOrderChange($event)"></app-dropdown>
-  </div>
+  </aside>
 
-  <div class="cards-container">
-    <div *ngIf="!(products$ | async)">
-      <p>Cargando...</p>
-    </div>
+  <ng-container *ngIf="!(products$ | async); else cards">
+    <p>{{ 'Loading...' }}</p>
+  </ng-container>
+  <ng-template #cards>
+    <div class="cards-container">
+      <p class="errorMenssage">{{errorMessage}}</p>
+      <article *ngFor="let product of (filteredProducts$ | async)" class="card">
+        <figure class="card-img-container">
+          <img *ngIf="product && product.productImages && product.productImages.length > 0 && product.currentImageIndex !== undefined" [src]="product.productImages[product.currentImageIndex]" alt="Product Image" class="card-img">
+          <ng-template #noImage>
+            <p>No image available</p>
+          </ng-template>
 
-    <div *ngFor="let product of (filteredProducts$ | async)" class="card">
-        <h2>{{ product?.name }}</h2>
-        <p>Description: {{ product?.description }}</p>
-        <p>Price: ${{ product?.price }}</p>
-        <div *ngFor="let imageUrl of product?.productImages">
-          <img class="img" [src]="imageUrl" alt="Product Image">
+          <button *ngIf="product && product.productImages && product.productImages.length > 1" (click)="nextImage(product)" class="next-image-button">></button>
+        </figure>
+        <div class="card-content">
+          <h2 class="name">{{ product?.name }}</h2>
+          <p class="description">Description: {{ product?.description }}</p>
+          <p class="price">Price: ${{ product?.price }}</p>
+          <button class="buy">Contact buyer</button>
         </div>
+      </article>
     </div>
-  </div>
+  </ng-template>
 
- <app-pagination class="pagination" [totalPages]="totalPages" (pageChanged)="loadProducts($event)"></app-pagination>
+  <app-pagination class="pagination" [totalPages]="totalPages" (pageChanged)="loadProducts($event)"></app-pagination>
 </section>
 
 <div *ngIf="showFilterPopup" class="filter-popup-overlay">

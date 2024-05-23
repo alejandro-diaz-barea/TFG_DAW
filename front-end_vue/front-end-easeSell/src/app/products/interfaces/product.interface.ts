@@ -8,4 +8,5 @@ export interface Product {
   productImages: FileHandle[];
   categories: string[];
   image_path: string;
+  currentImageIndex?:number;
 }

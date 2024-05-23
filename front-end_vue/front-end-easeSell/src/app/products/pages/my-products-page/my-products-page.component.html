@@ -1,1 +1,31 @@
-<p>my-products-page works!</p>
+<section class="explore-section">
+
+  <ng-container *ngIf="!(products$ | async); else cards">
+    <p>{{ 'Loading...' }}</p>
+  </ng-container>
+  <ng-template #cards>
+    <div class="cards-container">
+      <p class="errorMenssage">{{ errorMessage }}</p>
+      <article *ngFor="let product of (filteredProducts$ | async)" class="card">
+        <figure class="card-img-container">
+          <img *ngIf="product && product.productImages && product.productImages.length > 0 && product.currentImageIndex !== undefined" [src]="product.productImages[product.currentImageIndex]" alt="Product Image" class="card-img">
+          <ng-template #noImage>
+            <p>No image available</p>
+          </ng-template>
+
+          <button *ngIf="product && product.productImages && product.productImages.length > 1" (click)="nextImage(product)" class="next-image-button">></button>
+        </figure>
+        <div class="card-content">
+          <h2 class="name">{{ product?.name }}</h2>
+          <p class="description">Description: {{ product?.description }}</p>
+          <p class="price">Price: ${{ product?.price }}</p>
+          <button class="buy">Contact buyer</button>
+        </div>
+
+
+      </article>
+    </div>
+  </ng-template>
+
+</section>
+

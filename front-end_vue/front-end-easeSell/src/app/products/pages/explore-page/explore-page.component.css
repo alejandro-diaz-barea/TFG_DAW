@@ -1,27 +1,112 @@
-.explore-section{
-  min-height: 100vh;
-  padding: 30px;
 
+.explore-section {
+  min-height: 80vh;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
 }
 
-
-.sidebar{
+.sidebar {
   height: 35px;
   display: flex;
-  justify-content:space-evenly;
+  justify-content: space-evenly;
+  margin-bottom: 40px;
+  margin-top: 40px;
 }
 
-
-.container{
-  background-color: rgba(0, 0, 0, 0.379);
-
+.cards-container {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 auto;
+  text-align: center;
 }
 
-
-.img{
-  width: 50px;
+.card {
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  margin: 20px;
+  border: 1px solid #000000;
+  border-radius: 1rem;
+  box-sizing: border-box;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+  height: 300px;
+  padding: 0;
 }
 
+.card-img-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.4);
+  height: 100%;
+  width: 40%;
+  padding: 0;
+  margin: 0;
+  border-right: 1px solid transparent;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.next-image-button {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-family: 'Battambang';
+  font-size: 14px;
+  width: 30px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.next-image-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.errorMenssage{
+  text-align: center;
+  color: red;
+  text-justify: center;
+  margin-top: 100px;
+  font-size: 25px;
+}
+
+.card-content {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-content h2 {
+  font-family: 'Battambang';
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
 
 .filter-popup-overlay {
   position: fixed;
@@ -36,36 +121,98 @@
   align-items: center;
 }
 
-.cards-container {
-  margin-left: 80px;
-  margin-right: 80px;
-  text-align: center;
-  min-height: 100vh;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 50px;
-  margin-bottom: 20px;
+.buy {
+  width: 200px;
+  background-color: #276f9083;
+  color: rgb(0, 0, 0);
+  padding: 10px 20px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Bevan';
 }
 
-.card {
-  width: calc(50% - 20px);
-  margin: 10px;
-  border: 1px solid #000000;
-  border-radius: 1rem;
-  box-sizing: border-box;
-  transition: transform 0.3s ease;
-  overflow: hidden;
-  margin-bottom: 50px;
-
-  display: flex;
-  flex-direction: column;
+.buy:hover {
+  background-color: #276f90a0;
 }
 
+@media only screen and (max-width: 1356px) {
+  .card {
+    width: 500px;
+    height: 300px;
+  }
+}
 
-.pagination{
+@media only screen and (max-width: 1156px) {
+  .card {
+    height: 300px;
+  }
+}
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+@media only screen and (max-width: 1056px) {
+  .card {
+    height: 300px;
+  }
+  .description {
+    font-size: 11px;
+  }
+  .name {
+    font-size: 15px;
+  }
+}
+
+@media only screen and (max-width: 956px) {
+  .card {
+    height: 300px;
+  }
+  .description {
+    font-size: 9px;
+  }
+  .name {
+    font-size: 13px;
+  }
+}
+
+@media only screen and (max-width: 856px) {
+  .card {
+    height: 300px;
+  }
+  .description {
+    font-size: 7px;
+  }
+  .name {
+    font-size: 10px;
+  }
+}
+
+@media only screen and (max-width: 796px) {
+  .card {
+    width: 500px;
+  }
+  .description {
+    font-size: 9px;
+  }
+  .name {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .sidebar {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .card {
+    flex-direction: column;
+  }
+  .card-img-container {
+    height: 300px;
+    width: 100%;
+    max-width: none;
+  }
+  .card-content {
+    width: 100%;
+  }
 }

@@ -10,9 +10,9 @@ import { Category } from '../../interfaces/category.interface';
 })
 export class FiltersComponent implements OnInit {
   categories: Category[] = [];
-  selectedCategories: number[] = [];
   searchTerm: string = '';
-  filteredOptions: string[] = [];
+  selectedCategories: { id: number, name: string }[] = [];
+  filteredCategories: Category[] = [];
   searchTermControl: FormControl = new FormControl();
 
   @Output() closePopup: EventEmitter<void> = new EventEmitter<void>();
@@ -22,17 +22,23 @@ export class FiltersComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchCategories();
-    this.searchTermControl.valueChanges.subscribe(() => this.filterOptions());
+    this.searchTermControl.valueChanges.subscribe(() => this.filterCategories());
   }
 
   fetchCategories(): void {
-    this.http.get<any>('http://127.0.0.1:8000/api/v1/categories').subscribe(
+    let apiUrl = 'http://127.0.0.1:8000/api/v1/categories';
+
+    if (this.searchTerm) {
+      apiUrl += `?query=${this.searchTerm}`;
+    }
+
+    this.http.get<any>(apiUrl).subscribe(
       (response: any) => {
         this.categories = response.map((category: any) => ({
           id: category.id,
           categoryname: category.categoryname
         }));
-        this.filteredOptions = this.categories.map((category: any) => category.categoryname);
+        this.filteredCategories = this.categories;
       },
       (error: any) => {
         console.error('Error fetching categories:', error);
@@ -43,39 +49,47 @@ export class FiltersComponent implements OnInit {
 
   toggleCategorySelection(category: Category): void {
     const categoryId = category.id;
-    const index = this.selectedCategories.indexOf(categoryId);
+    const categoryName = category.categoryname;
+    const index = this.selectedCategories.findIndex(cat => cat.id === categoryId);
     if (index !== -1) {
       this.selectedCategories.splice(index, 1);
     } else {
-      this.selectedCategories.push(categoryId);
+      this.selectedCategories.push({ id: categoryId, name: categoryName });
     }
   }
 
 
+  isSelected(categoryId: number): boolean {
+    return this.selectedCategories.some(category => category.id === categoryId);
+  }
 
+
+
+  removeSelectedCategory(selectedCategory: { id: number; name: string; }): void {
+    const index = this.selectedCategories.findIndex(cat => cat.id === selectedCategory.id);
+    if (index !== -1) {
+      this.selectedCategories.splice(index, 1);
+    }
+  }
 
 
   closeFilterPopup(): void {
     this.closePopup.emit();
   }
 
-  filterOptions(): void {
-    if (!this.searchTermControl.value) {
-      this.filteredOptions = this.categories.map((category: any) => category.categoryname);
-    } else {
-      this.filteredOptions = this.categories.filter(
-        category => category.categoryname.toLowerCase().includes(this.searchTermControl.value.toLowerCase())
-      ).map((category: any) => category.categoryname);
-    }
+  filterCategories(): void {
+    const searchTerm = this.searchTermControl.value.toLowerCase();
+    this.filteredCategories = this.categories.filter(category =>
+      category.categoryname.toLowerCase().includes(searchTerm)
+    );
   }
-
-
-
 
   applyFilter(): void {
+    const selectedIds = this.selectedCategories.map(category => category.id);
     this.closePopup.emit();
-    this.filterApplied.emit(this.selectedCategories);
-    console.log('Selected categories:', this.selectedCategories);
-  }
+    this.filterApplied.emit(selectedIds);
+    console.log('Selected category ids:', selectedIds);
+}
+
 
 }

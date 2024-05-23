@@ -8,9 +8,10 @@ use App\Models\Category;
 class CategoryController extends Controller
 {
     // Retorna todas las categorías
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::all();
+        $query = $request->input('query');
+        $categories = Category::where('categoryname', 'like', "%$query%")->take(5)->get();
         return response()->json($categories);
     }
 
