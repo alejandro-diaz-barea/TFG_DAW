@@ -19,25 +19,36 @@ class ProductController extends Controller
         $orderBy = $request->input('orderby');
         $categories = $request->input('categories', []);
 
-        $query = Product::query()->with('categories');
-
-        if ($search) {
-            $query->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+        // Asegurarse de que $categories sea un array
+        if (!is_array($categories)) {
+            $categories = explode(',', $categories);
         }
 
+        $query = Product::query()->with('categories');
+
+        // Aplicar búsqueda por nombre o descripción
+        if ($search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                      ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        // Ordenar resultados
         if ($orderBy === 'price') {
             $query->orderBy('price', 'asc');
         } elseif ($orderBy === 'title') {
             $query->orderBy('name', 'asc');
         }
 
+        // Filtrar por categorías
         if (!empty($categories)) {
             $query->whereHas('categories', function ($query) use ($categories) {
-                $query->whereIn('category_id', $categories);
+                $query->whereIn('categories.id', $categories);
             });
         }
 
+        // Paginar resultados
         $products = $query->paginate(8);
 
         if ($products->isEmpty()) {
@@ -141,12 +152,43 @@ class ProductController extends Controller
         return response()->json($product, 200);
     }
 
-    // Eliminar producto
-    public function destroy($id)
-    {
-        Product::destroy($id);
-        return response()->json(null, 204);
-    }
+   // Eliminar producto
+   public function destroy(Request $request, $id)
+   {
+       // Obtener el ID del usuario autenticado
+       $userId = auth()->id();
+
+       // Verificar si el usuario es propietario del producto
+       $product = Product::find($id);
+       if (!$product) {
+           return response()->json(['message' => 'Producto no encontrado.'], 404);
+       }
+
+       if ($product->seller_id !== $userId) {
+           return response()->json(['message' => 'No tienes permiso para eliminar este producto.'], 403);
+       }
+
+       // Eliminar las relaciones con las categorías
+       $product->categories()->detach();
+
+       // Eliminar las imágenes asociadas al producto
+       $imagePaths = json_decode($product->image_path, true);
+       foreach ($imagePaths as $imagePath) {
+           // Obtener la ruta de la imagen
+           $imagePath = str_replace('/storage', 'public', $imagePath);
+           // Eliminar la imagen si existe
+           if (Storage::exists($imagePath)) {
+               Storage::delete($imagePath);
+           }
+       }
+
+       // Eliminar el producto
+       $product->delete();
+
+       return response()->json(null, 204);
+   }
+
+
 
     // Cargar imágenes adicionales
     public function uploadImage(Request $request, $id)

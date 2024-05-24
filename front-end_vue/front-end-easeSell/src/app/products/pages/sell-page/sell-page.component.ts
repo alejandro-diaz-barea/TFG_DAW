@@ -11,6 +11,7 @@ import { Product } from '../../interfaces/product.interface';
 })
 export class SellPageComponent implements OnDestroy {
   product: Product = {
+    id:0,
     name: "",
     description: "",
     price: 0,
@@ -122,6 +123,7 @@ export class SellPageComponent implements OnDestroy {
           this.errorMessage = '';
           this.productForm.reset();
           this.product = {
+            id:0,
             name: "",
             description: "",
             price: 0,

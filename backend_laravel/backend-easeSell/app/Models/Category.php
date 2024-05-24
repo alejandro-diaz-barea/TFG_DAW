@@ -9,12 +9,10 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'CategoryName',
-    ];
+    protected $fillable = ['CategoryName'];
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_categories', 'IDCategory', 'IDProduct');
+        return $this->belongsToMany(Product::class, 'product_categories', 'category_id', 'product_id');
     }
 }

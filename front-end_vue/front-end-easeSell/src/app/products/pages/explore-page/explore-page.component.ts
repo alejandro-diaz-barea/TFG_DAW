@@ -32,7 +32,7 @@ export class ExplorePageComponent implements OnInit {
     this.currentPage = page;
     let params = `?page=${page}`;
     if (this.searchTerm) {
-      params += `&search=${this.searchTerm}`;
+      params += `&search=${encodeURIComponent(this.searchTerm)}`;
     }
     if (this.orderBy) {
       params += `&orderby=${this.orderBy}`;
@@ -79,7 +79,6 @@ export class ExplorePageComponent implements OnInit {
     });
   }
 
-
   searchProducts(searchTerm: string): void {
     this.searchTerm = searchTerm;
     this.loadProducts(1);
@@ -91,7 +90,11 @@ export class ExplorePageComponent implements OnInit {
   }
 
   filterByCategory(categoryId: number): void {
-    this.selectedCategories = [categoryId];
+    if (this.selectedCategories.includes(categoryId)) {
+      this.selectedCategories = this.selectedCategories.filter(id => id !== categoryId);
+    } else {
+      this.selectedCategories.push(categoryId);
+    }
     this.loadProducts(1);
   }
 
