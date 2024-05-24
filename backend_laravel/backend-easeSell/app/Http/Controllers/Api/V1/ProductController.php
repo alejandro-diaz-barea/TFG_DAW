@@ -77,9 +77,6 @@ class ProductController extends Controller
         return response()->json(['data' => $products]);
     }
 
-
-
-
     // Crear producto
     public function store(Request $request)
     {
@@ -187,8 +184,6 @@ class ProductController extends Controller
 
        return response()->json(null, 204);
    }
-
-
 
     // Cargar imágenes adicionales
     public function uploadImage(Request $request, $id)

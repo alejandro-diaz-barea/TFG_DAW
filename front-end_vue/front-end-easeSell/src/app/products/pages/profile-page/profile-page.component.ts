@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../../auth/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-page',
@@ -7,4 +9,10 @@ import { Component } from '@angular/core';
 })
 export class ProfilePageComponent {
 
+  constructor(private authService: AuthService, private router: Router) {}
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(["/explore"])
+  }
 }
