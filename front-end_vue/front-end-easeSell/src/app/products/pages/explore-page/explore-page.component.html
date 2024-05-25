@@ -1,8 +1,7 @@
-
 <section class="explore-section">
   <aside class="sidebar">
     <app-search-bar (searchEvent)="searchProducts($event)"></app-search-bar>
-    <button (click)="toggleFilterPopup()" class="filter-button">Filter</button>
+    <button (click)="toggleFilterPopup()" class="filter-button"><img class="img" src="../../../../assets/filtrar.png"></button>
     <app-dropdown (orderChange)="onOrderChange($event)"></app-dropdown>
   </aside>
 
@@ -25,7 +24,7 @@
           <h2 class="name">{{ product?.name }}</h2>
           <p class="description">Description: {{ product?.description }}</p>
           <p class="price">Price: ${{ product?.price }}</p>
-          <button class="buy">Contact buyer</button>
+          <button class="buy" (click)="contactSeller(product.seller_id)">Contact Seller</button>
         </div>
       </article>
     </div>

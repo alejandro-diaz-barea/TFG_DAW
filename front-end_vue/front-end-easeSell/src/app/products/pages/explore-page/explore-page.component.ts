@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { Product } from '../../interfaces/product.interface';
 import { Category } from '../../interfaces/category.interface';
+import { AuthService } from '../../../auth/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-explore-page',
@@ -22,7 +24,11 @@ export class ExplorePageComponent implements OnInit {
   showFilterPopup: boolean = false;
   errorMessage: string = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.loadProducts(1);
@@ -44,14 +50,15 @@ export class ExplorePageComponent implements OnInit {
     this.http.get<any>(`http://127.0.0.1:8000/api/v1/products${params}`).pipe(
       tap((response: any) => {
         if (response && response.data && Array.isArray(response.data.data)) {
-          this.totalPages = response.total_pages;
-          this.errorMessage = ''; // Reset error message if data is received successfully
+          this.totalPages = response.data.last_page;
+          this.errorMessage = '';
         } else {
           this.errorMessage = 'No products found matching the specified criteria.';
         }
       }),
       map((response: any) => {
         if (response.data && Array.isArray(response.data.data)) {
+          console.log(response.data)
           return response.data.data.map((product: Product) => ({
             ...product,
             currentImageIndex: 0,
@@ -77,6 +84,12 @@ export class ExplorePageComponent implements OnInit {
       console.error('HTTP request error:', error);
       this.errorMessage = 'Products not found';
     });
+  }
+
+  goToLogin(): void {
+    if (!this.authService.isUserLoggedIn) {
+      this.router.navigate(['/auth/login']);
+    }
   }
 
   searchProducts(searchTerm: string): void {
@@ -112,6 +125,30 @@ export class ExplorePageComponent implements OnInit {
       product.currentImageIndex = (product.currentImageIndex + 1) % product.productImages.length;
     } else {
       product.currentImageIndex = 0;
+    }
+  }
+
+  contactSeller(sellerId: number): void {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+
+      const payload = { user2_id: sellerId };
+
+      this.http.post('http://127.0.0.1:8000/api/v1/chats', payload, { headers })
+        .subscribe(
+          (response) => {
+            console.log('Chat creado:', response);
+            this.router.navigate(['/messages']);
+          },
+          (error) => {
+            console.error('Error al crear el chat:', error);
+          }
+        );
+    } else {
+      console.error('Token de autenticación no encontrado.');
     }
   }
 }

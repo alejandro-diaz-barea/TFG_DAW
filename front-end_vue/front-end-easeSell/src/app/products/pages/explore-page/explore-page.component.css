@@ -138,6 +138,16 @@
   background-color: #276f90a0;
 }
 
+.img{
+  width: 20px;
+}
+
+.filter-button{
+  background-color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
 @media only screen and (max-width: 1356px) {
   .card {
     width: 500px;

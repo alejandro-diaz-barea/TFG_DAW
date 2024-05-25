@@ -18,6 +18,7 @@ export class SellPageComponent implements OnDestroy {
     productImages: [],
     categories: [],
     image_path: "",
+    seller_id:0
   };
 
   productForm: FormGroup;
@@ -129,7 +130,8 @@ export class SellPageComponent implements OnDestroy {
             price: 0,
             productImages: [],
             categories: [],
-            image_path: ""
+            image_path: "",
+            seller_id:0
           };
           this.formSubmitted = false;
 

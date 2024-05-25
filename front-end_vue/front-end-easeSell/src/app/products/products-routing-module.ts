@@ -9,6 +9,7 @@ import { PrivateGuard } from '../auth/guards';
 import { MessagePageComponent } from './pages/message-page/message-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { MyProductsPageComponent } from './pages/my-products-page/my-products-page.component';
+import { ChatsPageComponent } from './pages/chats-page/chats-page.component';
 
 const routes: Routes = [
   {
@@ -28,9 +29,14 @@ const routes: Routes = [
         component: SellPageComponent
       },
       {
-        path:'messages',
+        path:'chats/messages',
         canActivate:[PrivateGuard],
         component: MessagePageComponent
+      },
+      {
+        path:'chats',
+        canActivate:[PrivateGuard],
+        component: ChatsPageComponent
       },
       {
         path:'profile',

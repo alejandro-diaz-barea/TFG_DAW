@@ -1,0 +1,36 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.message-item {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.message-input {
+  display: flex;
+  margin-top: 20px;
+}
+
+.message-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.message-input button {
+  padding: 10px 20px;
+  margin-left: 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.message-input button[disabled] {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

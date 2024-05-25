@@ -10,4 +10,5 @@ export interface Product {
   categories: string[];
   image_path: string;
   currentImageIndex?:number;
+  seller_id:number
 }

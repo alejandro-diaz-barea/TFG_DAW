@@ -1,1 +1,17 @@
-<p>message-page works!</p>
+<div class="container">
+  <h2>Mensajes</h2>
+  <div *ngIf="messages.length === 0">
+    <p>No hay mensajes disponibles.</p>
+  </div>
+  <div *ngFor="let message of messages" class="message-item">
+    <p>{{ message.contain }}</p>
+  </div>
+
+  <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+    <div class="form-group">
+      <label for="content">Mensaje</label>
+      <textarea class="form-control" id="content" formControlName="content"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+  </form>
+</div>

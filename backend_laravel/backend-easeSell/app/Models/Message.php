@@ -16,6 +16,10 @@ class Message extends Model
         'view',
     ];
 
+    protected $attributes = [
+        'view' => false, // Establecer un valor predeterminado para el campo 'view'
+    ];
+
     public function chat()
     {
         return $this->belongsTo(Chat::class, 'IDChat');

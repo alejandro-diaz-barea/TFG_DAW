@@ -1,8 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Api\V1;
+
+use App\Models\Chat;
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Pusher\Pusher;
 
 class MessageController extends Controller
 {
@@ -11,57 +15,76 @@ class MessageController extends Controller
         $this->middleware('auth:api');
     }
 
-    /**
-     * Display a listing of the messages for a specific chat.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
+        $user_id = Auth::id();
         $chat_id = $request->input('chat_id');
 
-        // Verificar si el ID del chat está presente en la solicitud
-        if (!$chat_id) {
-            return response()->json(['error' => 'Se requiere el ID del chat.'], 400);
+        $chat = Chat::where('id', $chat_id)
+                    ->where(function ($query) use ($user_id) {
+                        $query->where('idusuario1', $user_id)
+                              ->orWhere('idusuario2', $user_id);
+                    })
+                    ->first();
+
+        if (!$chat) {
+            return response()->json(['error' => 'El chat no existe o no tienes permiso para acceder a él.'], 403);
         }
 
-        // Obtener los mensajes del chat especificado
-        $messages = Message::where('idchat', $chat_id)->get();
+        $messages = Message::where('IDChat', $chat_id)->get();
         return response()->json($messages);
     }
 
-    /**
-     * Display the specified message.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $message = Message::findOrFail($id);
         return response()->json($message);
     }
 
-    /**
-     * Store a newly created message in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $message = Message::create($request->all());
+        $user_id = Auth::id();
+
+        $request->validate([
+            'IDChat' => 'required|exists:chats,id',
+            'content' => 'required|string|max:255',
+        ]);
+
+        // Verificar si el ID del chat pertenece al usuario autenticado
+        $chat = Chat::where('id', $request->IDChat)
+                    ->where(function ($query) use ($user_id) {
+                        $query->where('idusuario1', $user_id)
+                              ->orWhere('idusuario2', $user_id);
+                    })
+                    ->first();
+
+        if (!$chat) {
+            return response()->json(['error' => 'No tienes permiso para enviar mensajes en este chat.'], 403);
+        }
+
+        $message = Message::create([
+            'IDChat' => $request->IDChat,
+            'contain' => $request->content,
+        ]);
+
+        // Configuración de Pusher usando variables de entorno
+        $pusher = new Pusher(
+            config('broadcasting.connections.pusher.key'),
+            config('broadcasting.connections.pusher.secret'),
+            config('broadcasting.connections.pusher.app_id'),
+            [
+                'cluster' => config('broadcasting.connections.pusher.options.cluster'),
+                'useTLS' => config('broadcasting.connections.pusher.options.useTLS'),
+            ]
+        );
+
+        // Enviar evento a Pusher
+        $pusher->trigger("chat.{$request->IDChat}", 'message-sent', $message);
+
+        // Aquí se envía la respuesta JSON con el mensaje recién creado
         return response()->json($message, 201);
     }
 
-    /**
-     * Update the specified message in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $message = Message::findOrFail($id);
@@ -69,12 +92,6 @@ class MessageController extends Controller
         return response()->json($message, 200);
     }
 
-    /**
-     * Remove the specified message from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         Message::destroy($id);

@@ -15,6 +15,7 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { MyProductsPageComponent } from './pages/my-products-page/my-products-page.component';
 import { FiltersComponent } from './components/filters/filters.component';
+import { ChatsPageComponent } from './pages/chats-page/chats-page.component';
 
 
 
@@ -32,6 +33,7 @@ import { FiltersComponent } from './components/filters/filters.component';
     PaginationComponent,
     MyProductsPageComponent,
     FiltersComponent,
+    ChatsPageComponent,
   ],
   imports: [
     CommonModule,
