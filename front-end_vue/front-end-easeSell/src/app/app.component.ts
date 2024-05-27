@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'front-end-easeSell';
   authChecked: boolean = false;
+  showMenu: boolean = false; 
 
   constructor(private authService: AuthService, private router : Router) {}
 
@@ -25,6 +26,11 @@ export class AppComponent implements OnInit {
       console.error('Error al verificar el estado de autenticación:', error);
       this.authChecked = true;
     });
+  }
+
+  toggleMenu() {
+    // Alternar la visibilidad del menú desplegable
+    this.showMenu = !this.showMenu;
   }
 
 

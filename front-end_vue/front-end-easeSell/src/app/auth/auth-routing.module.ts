@@ -16,14 +16,11 @@ const routes: Routes = [
         component: LoginPageComponent
       },
       {
-        path: 'new-acount',
+        path: 'new-account',
         canActivate:[PublicGuard],
         component: RegisterPageComponent
       },
-      {
-        path: '**',
-        redirectTo: 'login'
-      }
+
     ]
   }
 ];

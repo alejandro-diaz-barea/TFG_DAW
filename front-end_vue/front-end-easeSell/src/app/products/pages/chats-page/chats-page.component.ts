@@ -56,7 +56,8 @@ export class ChatsPageComponent implements OnInit {
     return this.authService.currentUserInfo?.id;
   }
 
-  navigateToMessages(chatId: number): void {
-    this.router.navigate(['/chats/messages'], { queryParams: { chatId } });
+  navigateToMessages(chatId: number, otherName: string): void {
+
+    this.router.navigate(['/chats/messages'], { queryParams: { chatId, otherName } });
   }
 }

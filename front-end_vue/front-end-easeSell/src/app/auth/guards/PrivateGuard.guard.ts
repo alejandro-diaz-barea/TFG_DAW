@@ -18,10 +18,10 @@ export const PrivateGuard: CanActivateChildFn = (route, state) =>{
   }
 
   if ( authService.isUserLoggedIn === false){
+    router.navigate(['/explore'])
     return false
-  }
 
-  router.navigate(['/auth/login'])
+  }
 
 
 

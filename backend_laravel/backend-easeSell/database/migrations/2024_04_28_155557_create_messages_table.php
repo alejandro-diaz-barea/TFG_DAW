@@ -18,6 +18,7 @@ return new class extends Migration
         $table->timestamp('timestamp');
         $table->boolean('view');
         $table->timestamps();
+        $table->unsignedBigInteger('sender_id');
     });
 }
 

@@ -1,17 +1,20 @@
 <div class="container">
-  <h2>Mensajes</h2>
-  <div *ngIf="messages.length === 0">
+  <h2 class="chat-title">{{ "Chat name : " + chatName }}</h2>
+  <div *ngIf="messages.length === 0" class="no-messages">
     <p>No hay mensajes disponibles.</p>
   </div>
-  <div *ngFor="let message of messages" class="message-item">
-    <p>{{ message.contain }}</p>
+  <div class="message-container" #messageContainer>
+    <div *ngFor="let message of messages" class="message-item" [ngClass]="{'my-message': message.sender_id === currentUserID, 'other-message': message.sender_id !== currentUserID}">
+      <div class="message-text">{{ message.contain }}</div>
+    </div>
   </div>
 
-  <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+  <form [formGroup]="messageForm" (ngSubmit)="sendMessage()" class="message-form">
     <div class="form-group">
-      <label for="content">Mensaje</label>
-      <textarea class="form-control" id="content" formControlName="content"></textarea>
+      <div class="input-with-button">
+        <input type="text" class="form-control" id="content" formControlName="content">
+        <button type="submit" class="btn btn-primary">Send</button>
+      </div>
     </div>
-    <button type="submit" class="btn btn-primary">Enviar mensaje</button>
   </form>
 </div>

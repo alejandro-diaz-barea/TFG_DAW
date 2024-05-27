@@ -1,5 +1,5 @@
 .contact-section {
-  min-height: 60vh;
+  min-height: 61.2vh;
   padding: 50px;
   font-family: 'Battambang';
   width: 400px auto;
@@ -10,22 +10,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px; /* Ajustar el margen superior del formulario */
+  margin-top: 30px;
 }
 
 .contact-section__title {
-  font-size: 3em;
+  font-size: 3rem;
   text-align: center;
-  margin-top: 50px; /* Ajustar el margen superior del título */
+  margin-top: 0px;
+  margin-bottom: 70px;
 }
 
 .contact-form__input {
   background-color: rgba(39, 110, 144, 0.4);
   width: 50%;
   padding: 10px;
-  margin-bottom: 30px; /* Ajustar el margen inferior de los elementos del formulario */
+  margin-bottom: 30px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  margin-bottom: 60px;
 }
 
 .contact-form__input::placeholder {
@@ -35,17 +37,18 @@
 .contact-form__input--date {
   width: 50%;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 60px;
   border: 1px solid #ccc;
   border-radius: 5px;
+
 }
 
 .contact-form__button {
-  width: 10%;
+  width: 100px;
   background-color: rgba(39, 110, 144, 0.4);
   color: rgb(0, 0, 0);
   padding: 10px 20px;
-  margin-top: 30px; /* Ajustar el margen superior del botón */
+  margin-top: 30px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -55,8 +58,9 @@
 
 .contact-form__error {
   color: red;
-  margin-top: -10px;
+  margin-top: -50px;
   font-size: 1em;
+  margin-bottom: 30px;
 }
 
 .contact-form__button:hover {
@@ -66,16 +70,30 @@
 .contact-form__success {
   color: green;
   margin-top: 20px;
-  font-size: 1em;
+  font-size: 1rem;
 }
 
-@media screen and (max-height: 850px) {
-  .contact-form__input {
-    margin-bottom: 20px;
-  }
+@media screen and (max-width: 400px) {
+
 
   .contact-section__title {
+
+    font-size: 2rem;
+  }
+
+  .contact-form__error {
+    font-size: 10px;
+  }
+
+  .contact-section {
+    padding: 20px;
+  }
+
+  .contact-form__success {
+    font-size: 0.875em;
+  }
+
+  .contact-form__button{
     margin-bottom: 15px;
-    margin-top: -30px;
   }
 }

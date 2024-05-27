@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as Pusher from 'pusher-js';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Importa FormGroup y FormBuilder
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-message-page',
@@ -15,11 +16,18 @@ export class MessagePageComponent implements OnInit, OnDestroy {
   newMessage: string = '';
   pusherChannel: Pusher.Channel | null = null;
   messageForm!: FormGroup;
+  chatName: string = ''; // Definir la propiedad chatName
+
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) { }
+
+  get currentUserID() {
+    return this.authService.currentUserInfo?.id;
+  }
 
   ngOnInit(): void {
     this.messageForm = this.formBuilder.group({
@@ -28,7 +36,9 @@ export class MessagePageComponent implements OnInit, OnDestroy {
 
     this.route.queryParams.subscribe(params => {
       this.chatId = params['chatId'];
+      this.chatName = params['otherName']; // Asignar el valor de chatName desde los parámetros de la URL
       console.log('Chat ID:', this.chatId);
+      console.log('Chat Name:', this.chatName);
       this.fetchMessages();
       this.initializePusher();
     });
@@ -85,7 +95,7 @@ export class MessagePageComponent implements OnInit, OnDestroy {
           .subscribe(
             (response) => {
               console.log('Message sent successfully:', response);
-              this.messageForm.reset(); 
+              this.messageForm.reset();
             },
             (error) => {
               console.error('Error al enviar el mensaje:', error);

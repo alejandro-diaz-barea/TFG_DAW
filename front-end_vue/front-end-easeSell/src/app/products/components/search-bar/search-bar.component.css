@@ -29,32 +29,31 @@
   width: 20%;
 }
 
-img {
+.search__icon {
   height: 100%;
   width: auto;
 }
 
-
 @media screen and (max-width: 1000px) {
-
   .search__input {
-  width: 350px;
+    width: 350px;
+  }
 }
-}
-
 
 @media screen and (max-width: 800px) {
-
-.search__input {
-width: 220px;
+  .search__input {
+    width: 220px;
+  }
 }
-}
-
-
 
 @media screen and (max-width: 550px) {
-
-.search__input {
-width: 170px;
+  .search__input {
+    width: 170px;
+  }
 }
+
+@media screen and (max-width: 500px) {
+  .search__input {
+    width: 200px;
+  }
 }

@@ -65,6 +65,7 @@ class MessageController extends Controller
         $message = Message::create([
             'IDChat' => $request->IDChat,
             'contain' => $request->content,
+            'sender_id' => $user_id, // Añadimos el campo sender_id
         ]);
 
         // Configuración de Pusher usando variables de entorno
@@ -81,9 +82,9 @@ class MessageController extends Controller
         // Enviar evento a Pusher
         $pusher->trigger("chat.{$request->IDChat}", 'message-sent', $message);
 
-        // Aquí se envía la respuesta JSON con el mensaje recién creado
         return response()->json($message, 201);
     }
+
 
     public function update(Request $request, $id)
     {

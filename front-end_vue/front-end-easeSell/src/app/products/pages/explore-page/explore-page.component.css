@@ -6,7 +6,7 @@
   flex-direction: column;
 }
 
-.sidebar {
+.explore-section__sidebar {
   height: 35px;
   display: flex;
   justify-content: space-evenly;
@@ -14,13 +14,54 @@
   margin-top: 40px;
 }
 
-.cards-container {
+.explore-section__cards-container {
   flex: 1;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   margin: 0 auto;
   text-align: center;
+}
+
+.explore-section__error-message {
+  text-align: center;
+  color: red;
+  text-justify: center;
+  margin-top: 100px;
+  font-size: 25px;
+}
+
+.explore-section__pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.explore-section__filter-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.explore-section__filter-button {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.explore-section__filter-button-img {
+  width: 20px;
+}
+
+.explore-section__dropdown {
+  display: block;
 }
 
 .card {
@@ -37,7 +78,7 @@
   padding: 0;
 }
 
-.card-img-container {
+.card__img-container {
   position: relative;
   display: flex;
   align-items: center;
@@ -50,14 +91,14 @@
   border-right: 1px solid transparent;
 }
 
-.card-img {
+.card__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 0;
 }
 
-.next-image-button {
+.card__next-image-button {
   position: absolute;
   top: 50%;
   right: 0;
@@ -77,19 +118,11 @@
   align-items: center;
 }
 
-.next-image-button:hover {
+.card__next-image-button:hover {
   background-color: rgba(0, 0, 0, 0.7);
 }
 
-.errorMenssage{
-  text-align: center;
-  color: red;
-  text-justify: center;
-  margin-top: 100px;
-  font-size: 25px;
-}
-
-.card-content {
+.card__content {
   flex: 1;
   padding: 20px;
   display: flex;
@@ -98,30 +131,19 @@
   align-items: center;
 }
 
-.card-content h2 {
+.card__name {
   font-family: 'Battambang';
 }
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+.card__description {
+  font-size: 16px;
 }
 
-.filter-popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.card__price {
+  font-size: 16px;
 }
 
-.buy {
+.card__buy {
   width: 200px;
   background-color: #276f9083;
   color: rgb(0, 0, 0);
@@ -134,19 +156,10 @@
   font-family: 'Bevan';
 }
 
-.buy:hover {
+.card__buy:hover {
   background-color: #276f90a0;
 }
 
-.img{
-  width: 20px;
-}
-
-.filter-button{
-  background-color: white;
-  cursor: pointer;
-  border-radius: 5px;
-}
 
 @media only screen and (max-width: 1356px) {
   .card {
@@ -165,10 +178,10 @@
   .card {
     height: 300px;
   }
-  .description {
+  .card__description {
     font-size: 11px;
   }
-  .name {
+  .card__name {
     font-size: 15px;
   }
 }
@@ -177,10 +190,10 @@
   .card {
     height: 300px;
   }
-  .description {
+  .card__description {
     font-size: 9px;
   }
-  .name {
+  .card__name {
     font-size: 13px;
   }
 }
@@ -189,10 +202,10 @@
   .card {
     height: 300px;
   }
-  .description {
+  .card__description {
     font-size: 7px;
   }
-  .name {
+  .card__name {
     font-size: 10px;
   }
 }
@@ -201,28 +214,92 @@
   .card {
     width: 500px;
   }
-  .description {
+  .card__description {
     font-size: 9px;
   }
-  .name {
+  .card__name {
     font-size: 12px;
   }
 }
 
 @media only screen and (max-width: 600px) {
-  .sidebar {
-    width: 100%;
-    margin-bottom: 20px;
+  .card {
+    width: 90%;
+    max-width: 90%;
+    margin: 10px auto;
+    height: 300px;
   }
+
+  .card__img-container {
+    width: 40%;
+    height: 100%;
+  }
+
+  .card__content {
+    width: 60%;
+    padding: 20px;
+  }
+
+  .card__buy {
+    width: auto;
+    margin-top: 20px;
+  }
+
+  .card__next-image-button {
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+  }
+
+  .explore-section__error-message {
+    font-size: 18px;
+  }
+
+  .explore-section__filter-button {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 500px) {
   .card {
     flex-direction: column;
+    width: 90%;
+    max-width: 90%;
+    margin: 10px auto;
+    height: auto;
   }
-  .card-img-container {
+
+  .card__img-container {
+    width: 100%;
     height: 300px;
-    width: 100%;
-    max-width: none;
   }
-  .card-content {
+
+  .card__img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card__content {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .card__buy {
+    width: auto;
+    margin-top: 20px;
+  }
+
+  .card__next-image-button {
+    display: none;
+  }
+
+  .explore-section__error-message {
+    font-size: 18px;
+  }
+
+  .explore-section__dropdown {
+    display: none;
   }
 }

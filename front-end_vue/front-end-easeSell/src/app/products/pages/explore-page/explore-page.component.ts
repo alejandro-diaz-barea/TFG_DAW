@@ -141,7 +141,7 @@ export class ExplorePageComponent implements OnInit {
         .subscribe(
           (response) => {
             console.log('Chat creado:', response);
-            this.router.navigate(['/messages']);
+            this.router.navigate(['/chats']);
           },
           (error) => {
             console.error('Error al crear el chat:', error);

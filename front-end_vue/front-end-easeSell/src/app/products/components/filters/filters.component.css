@@ -1,6 +1,4 @@
-/* filters.component.css */
 
-/* Contenedor del popup */
 .filter-popup-container {
   position: fixed;
   top: 50%;
@@ -11,20 +9,18 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  width: 250px; /* Ancho total del contenedor */
-  max-height: 80vh; /* Máxima altura del contenedor */
-  overflow-y: auto; /* Habilita el desplazamiento vertical si el contenido excede la altura */
+  width: 250px;
+  max-height: 80vh;
+  overflow-y: auto;
   display: flex;
 
 }
 
-/* Contenido del popup */
 .filter-popup-content {
-  flex: 1; /* Ocupa todo el espacio disponible */
-  padding: 0 20px; /* Espacio entre las dos columnas */
+  flex: 1;
+  padding: 0 20px;
 }
 
-/* Estilos para la lista de categorías */
 .filter-popup-content ul {
   list-style: none;
   padding: 0;
@@ -36,10 +32,9 @@
 }
 
 .filter-popup-content ul li.selected {
-  background-color: #f0f0f0; /* Color de fondo cuando la categoría está seleccionada */
+  background-color: #f0f0f0;
 }
 
-/* Estilos para la lista de categorías seleccionadas */
 .filter-popup-content h4 {
   margin-top: 20px;
 }
@@ -65,7 +60,6 @@
   cursor: pointer;
 }
 
-/* Botón de cerrar */
 .close-button {
   position: absolute;
   top: 10px;
@@ -78,14 +72,12 @@
   padding: 0;
 }
 
-/* Contenedor del botón */
 .apply-container {
   display: flex;
-  justify-content: center; /* Centra el contenido horizontalmente */
-  margin-top: 20px; /* Aumenta el espacio entre la lista de categorías seleccionadas y el botón */
+  justify-content: center;
+  margin-top: 20px;
 }
 
-/* Estilos para el botón */
 .apply {
   width: 100px;
   background-color: rgba(39, 110, 144, 0.4);
@@ -97,3 +89,4 @@
   transition: background-color 0.3s ease;
   font-family: 'Bevan';
 }
+

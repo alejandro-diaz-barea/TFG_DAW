@@ -14,6 +14,7 @@ class Message extends Model
         'contain',
         'timestamp',
         'view',
+        'sender_id'
     ];
 
     protected $attributes = [

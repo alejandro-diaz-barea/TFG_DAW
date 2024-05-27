@@ -14,15 +14,14 @@ export const PublicGuard: CanActivateChildFn = (route, state) =>{
 
 
   if ( authService.isUserLoggedIn === true){
-    router.navigate(['/explore'])
+    router.navigate(['/'])
     return false
   }
 
 
   return true
 
-  // get user(): boolean{
-  //   return this.authService.isUserLoggedIn;
-  // }
+
 
 }
+

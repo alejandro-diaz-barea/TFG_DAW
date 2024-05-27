@@ -32,6 +32,7 @@
   margin-top: 20px;
   margin-bottom: 0px;
   font-family:'Battambang';
+  margin-bottom: 30px;
 
 }
 
@@ -52,6 +53,7 @@
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  margin-bottom: 50px;
 }
 
 
@@ -62,7 +64,8 @@
 
 .login-form__error-message{
   color: red;
-  margin-bottom: 0;
+  margin-bottom: 50px;
+  margin-top: -40px;
 
 }
 
@@ -76,6 +79,7 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-family: 'Bevan';
+  margin-bottom: 50px;
 
 }
 
@@ -85,7 +89,7 @@
 }
 
 .login-form__dont-account{
-  margin-top: 30px;
+  margin-top: 0px;
   width: 100%;
   text-align: center;
 }
@@ -207,6 +211,34 @@
     width: 100% ;
 
   }
+
+
+}
+
+@media screen and (max-height: 850px) {
+  .login-form__input {
+    margin-top: 40px;
+    margin-bottom: 0px;
+  }
+
+  .login-form__error-message{
+    color: red;
+    margin-bottom: -10px;
+    margin-top: 0px;
+  }
+
+  .login-form__button {
+    margin-bottom: 10px;
+    margin-top: 30px;
+
+  }
+
+  .login-form__dont-account{
+    margin-top: 40px;
+    width: 100%;
+    text-align: center;
+  }
+
 
 
 }

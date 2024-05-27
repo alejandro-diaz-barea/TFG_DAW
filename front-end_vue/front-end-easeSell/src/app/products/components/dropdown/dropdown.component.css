@@ -12,8 +12,17 @@
 
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 600px) {
 .order-selector{
   display: none;
 }
+.order-selector__select {
+
+  width: 100px;
+  font-size: 10px;
+
+
 }
+}
+
+
