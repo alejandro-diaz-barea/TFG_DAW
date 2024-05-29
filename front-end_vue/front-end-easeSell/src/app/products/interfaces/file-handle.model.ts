@@ -3,6 +3,7 @@ import { SafeUrl } from "@angular/platform-browser";
 
 
 export interface FileHandle{
-  file:File,
+  [x: string]: any;
+  file:File ,
   url: SafeUrl
 }

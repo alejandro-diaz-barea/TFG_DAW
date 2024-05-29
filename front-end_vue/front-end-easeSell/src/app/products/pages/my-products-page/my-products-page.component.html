@@ -20,7 +20,7 @@
           <p class="card__description">Description: {{ product?.description }}</p>
           <p class="card__price">Price: ${{ product?.price }}</p>
           <button class="delete" (click)="confirmDelete(product)">Delete</button>
-          <button class="edit">Edit</button>
+          <button class="edit" [routerLink]="['/sell', product.id]">Edit</button>
         </div>
       </article>
     </div>

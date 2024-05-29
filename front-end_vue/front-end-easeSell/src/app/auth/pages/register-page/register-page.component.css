@@ -13,8 +13,6 @@
 }
 
 
-/*Formulario */
-
 .register-form {
   width: 70%;
   padding: 1rem;
@@ -102,9 +100,10 @@
   align-items: center;
   justify-content: center;
   width: 50%;
-  height: 400px;
   padding: 0%;
   margin: 0;
+  height: 500px;
+  margin-left: 60px;
 }
 
 .register-info__box{
@@ -119,20 +118,20 @@
   text-align: center;
   font-family:'Battambang';
   color: black;
-
-
 }
 
 
 .register-info__box-title{
   font-size: 2rem;
+  margin-bottom: 80px;
 
 }
 
 .register-info__box-text{
-  max-width: 70%;
-  text-align: justify;
-  font-size: 1.5rem;
+  max-width: 60%;
+  text-align: left;
+  font-size: 1.3rem;
+  margin-left: 10px;
 
 }
 
@@ -224,5 +223,26 @@
   .register-form__button{
     margin-top: 20px;
   }
+
+  .register-info {
+    height: 500px;
+
+  }
+
+  .register-info__box-title{
+    font-size: 1.4rem;
+    margin-bottom: 30px;
+
+
+  }
+
+  .register-info__box-text{
+    max-width: 70%;
+    text-align: left;
+    font-size: 0.7rem;
+
+  }
+
+
 
 }

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -100,7 +101,7 @@ class ProductController extends Controller
             'price' => $request->input('price'),
             'seller_id' => $sellerId,
             'date' => DB::raw('CURRENT_TIMESTAMP'),
-            'image_path' => '', // Inicializar como un string vacío temporalmente
+            'image_path' => '',
         ]);
 
         $imagePaths = [];
@@ -134,20 +135,96 @@ class ProductController extends Controller
         return response()->json($product, 201);
     }
 
+    // Actualizar producto
+    public function update(Request $request, $id)
+{
+    // Obtener el producto por ID
+    $product = Product::findOrFail($id);
+
+    // Verificar si el usuario autenticado es el propietario del producto
+    if ($request->user()->id !== $product->seller_id) {
+        return response()->json(['error' => 'No tienes permiso para modificar este producto.'], 403);
+    }
+
+    // Validar los datos de la solicitud
+    $validatedData = $request->validate([
+        'name' => 'required|string',
+        'description' => 'required|string',
+        'price' => 'required|numeric',
+        'images' => 'nullable|array',
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        'categories' => 'required|array',
+    ]);
+
+    // Actualizar el producto con los nuevos datos
+    $product->update([
+        'name' => $validatedData['name'],
+        'description' => $validatedData['description'],
+        'price' => $validatedData['price'],
+    ]);
+
+    // Actualizar categorías
+    $categories = $validatedData['categories'];
+    $product->categories()->detach();
+    foreach ($categories as $category) {
+        $product->categories()->attach($category);
+    }
+
+    // Actualizar imágenes
+    if ($request->hasFile('images')) {
+        $this->updateImages($request->file('images'), $product);
+    }
+
+    return response()->json($product, 200);
+    }
+
+    // Método para actualizar imágenes
+    private function updateImages($images, $product)
+{
+    // Eliminar imágenes antiguas
+    $imagePaths = json_decode($product->image_path, true) ?? [];
+    foreach ($imagePaths as $imagePath) {
+        $this->deleteImage($imagePath);
+    }
+
+    // Agregar nuevas imágenes
+    $newImagePaths = [];
+    foreach ($images as $image) {
+        $newImagePaths[] = $this->storeImage($image, $product);
+    }
+
+    // Actualizar las rutas de las imágenes
+    $product->image_path = json_encode($newImagePaths);
+    $product->save();
+}
+
+// Método para eliminar una imagen
+private function deleteImage($imagePath)
+{
+    $imagePath = str_replace('/storage', 'public', $imagePath);
+    if (Storage::exists($imagePath)) {
+        Storage::delete($imagePath);
+    }
+}
+
+// Método para guardar una imagen
+private function storeImage($image, $product)
+{
+    $productImageFolder = 'public/product_images/' . $product->id . '_' . Str::slug($product->name);
+    $imageName = time() . '_' . $image->getClientOriginalName();
+    $path = $image->storeAs($productImageFolder, $imageName);
+    return Storage::url($path);
+}
+
+
+
     // Mostrar producto
     public function show($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with('categories')->findOrFail($id);
         return response()->json($product);
     }
 
-    // Actualizar producto
-    public function update(Request $request, $id)
-    {
-        $product = Product::findOrFail($id);
-        $product->update($request->all());
-        return response()->json($product, 200);
-    }
 
    // Eliminar producto
    public function destroy(Request $request, $id)

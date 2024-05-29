@@ -79,6 +79,7 @@
   .contact-section__title {
 
     font-size: 2rem;
+
   }
 
   .contact-form__error {
@@ -87,6 +88,7 @@
 
   .contact-section {
     padding: 20px;
+    height: 66vh;
   }
 
   .contact-form__success {
@@ -96,4 +98,41 @@
   .contact-form__button{
     margin-bottom: 15px;
   }
+}
+
+
+@media screen and (max-width: 800px) {
+
+
+  .contact-section__title{
+    margin-top: 50px;
+  }
+  .contact-section {
+    padding: 20px;
+    height: 69vh;
+  }
+}
+
+@media screen and (max-height: 800px) {
+
+  .contact-form__input{
+    margin-bottom: 10px;
+    margin-bottom: 20px;
+  }
+
+  .contact-section__title{
+    margin-bottom: 40px;
+    margin-top: -10px;
+  }
+
+  .contact-form__error{
+    margin-top: -10px;
+    margin-bottom: 20px;
+  }
+
+
+  .contact-form__button{
+    margin-bottom: 30px;
+  }
+
 }

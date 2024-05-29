@@ -13,8 +13,6 @@
 }
 
 
-/* Estilos para el Formulario */
-
 .login-form {
   width: 70%;
   padding: 2rem;
@@ -24,7 +22,6 @@
   align-items: center;
   justify-content: center;
 }
-
 
 .login-form__title{
   font-size: 2.5em;
@@ -96,22 +93,21 @@
 
 
 
-
-/* Estilos para recuadro de info */
-
+/* card info */
 .login-info {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 50%;
-  height: 100%;
   padding: 0%;
   margin: 0;
+  height: 500px;
+  margin-right: 60px;
 }
 
 .login-info__box{
   width: 80%;
-  height: 90%;
+  height: 100%;
   background-color: rgba(39, 110, 144, 0.4);
   border-radius: 20px;
   display: flex;
@@ -128,21 +124,18 @@
 
 .login-info__box-title{
   font-size: 2rem;
+  margin-bottom: 80px;
 
 }
 
 .login-info__box-text{
-  max-width: 70%;
-  text-align: justify; /* Justifica el texto */
-  font-size: 1.5rem;
+  max-width: 60%;
+  text-align: left;
+  font-size: 1.3rem;
+  margin-left: 10px;
 
 }
 
-
-
-
-
-/* Responsive */
 
 @media screen and (max-height: 850px) {
   .login-form__input{
@@ -217,7 +210,7 @@
 
 @media screen and (max-height: 850px) {
   .login-form__input {
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 0px;
   }
 
@@ -235,10 +228,33 @@
 
   .login-form__dont-account{
     margin-top: 40px;
+    margin-bottom: 10px;
     width: 100%;
     text-align: center;
   }
 
+  .login-form__title{
+    margin-bottom: 10px;
+  }
+
+
+  .login-info {
+    height: 400px;
+  }
+
+
+  .login-info__box-title{
+    font-size: 1.4rem;
+    margin-bottom: 30px;
+
+  }
+
+  .login-info__box-text{
+    max-width: 70%;
+    text-align: left;
+    font-size: 0.7rem;
+
+  }
 
 
 }

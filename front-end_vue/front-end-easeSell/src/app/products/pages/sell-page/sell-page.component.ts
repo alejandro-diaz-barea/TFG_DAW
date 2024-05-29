@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileHandle } from '../../interfaces/file-handle.model';
 import { Product } from '../../interfaces/product.interface';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-sell-page',
@@ -32,10 +33,15 @@ export class SellPageComponent implements OnDestroy {
   filterError: boolean = false;
   formSubmitted: boolean = false;
   private successTimeout: any;
+  productId: number | null = null;
+  isUpdated: boolean | undefined;
+
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private route: ActivatedRoute
+
   ) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
@@ -46,6 +52,45 @@ export class SellPageComponent implements OnDestroy {
 
   ngOnDestroy() {
     clearTimeout(this.successTimeout);
+  }
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.isUpdated = true;
+        this.productId = +id;
+        this.loadProduct(this.productId);
+
+      }
+    });
+  }
+
+
+  loadProduct(id: number) {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+      this.http.get<Product>(`http://127.0.0.1:8000/api/v1/products/${id}`, { headers }).subscribe(
+        product => {
+          console.log(product)
+          this.productForm.patchValue({
+            name: product.name,
+            description: product.description,
+            price: product.price
+          });
+
+
+
+
+        },
+        error => {
+          console.error('Error loading product:', error);
+        }
+      );
+    }
   }
 
   validateField(fieldName: string) {
@@ -149,5 +194,10 @@ export class SellPageComponent implements OnDestroy {
     } else {
       console.error('No se encontró el token de autenticación.');
     }
+  }
+
+
+  onSubmitUpload(event: Event){
+    event.preventDefault();
   }
 }

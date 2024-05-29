@@ -1,7 +1,7 @@
 <section class="section-sell">
   <h1 class="section-sell__title">Upload products</h1>
 
-  <form [formGroup]="productForm" (submit)="onSubmit($event)" class="form">
+  <form [formGroup]="productForm" class="form">
     <label>
       <input placeholder="Product name" type="text" formControlName="name" class="input input--text" (blur)="validateField('name')">
       <p *ngIf="fieldErrors['name'] || (formSubmitted && !productForm.controls['name'].valid)" class="error-message error-message--visible">This field is required.</p>
@@ -54,7 +54,8 @@
       </figure>
     </section>
 
-    <button type="submit" class="submit-button">Upload product</button>
+    <button  *ngIf="!isUpdated" type="submit" class="submit-button"  (click)="onSubmit($event)">Push product</button>
+    <button  *ngIf="isUpdated" type="submit" class="submit-button"  (click)="onSubmitUpload($event)">Upload product</button>
 
     <p *ngIf="successMessage" class="success-message success-message--visible">{{ successMessage }}</p>
     <p *ngIf="errorMessage" class="error-message error-message--visible">{{ errorMessage }}</p>

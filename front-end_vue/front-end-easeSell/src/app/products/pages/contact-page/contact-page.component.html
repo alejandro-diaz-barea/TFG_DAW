@@ -8,6 +8,6 @@
     <input type="date" class="contact-form__input contact-form__input--date" placeholder="Date of incident:" formControlName="fecha" (blur)="validarCampo('fecha')">
     <p *ngIf="contact.get('fecha')?.invalid && contact.get('fecha')?.touched" class="contact-form__error">The date must be later than 2024</p>
     <button class="contact-form__button" (click)="enviarFormulario()">Send</button>
-    <p *ngIf="enviadoConExito" class="contact-form__success">Entregado con éxito!</p>
+    <p *ngIf="enviadoConExito" class="contact-form__success">Message sent successfully!</p>
   </form>
 </section>

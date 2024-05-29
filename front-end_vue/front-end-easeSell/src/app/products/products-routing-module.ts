@@ -29,6 +29,13 @@ const routes: Routes = [
         component: SellPageComponent
       },
       {
+        path: 'sell/:id',
+        component: SellPageComponent,
+        canActivate: [PrivateGuard]
+
+      },
+
+      {
         path:'chats/messages',
         canActivate:[PrivateGuard],
         component: MessagePageComponent
