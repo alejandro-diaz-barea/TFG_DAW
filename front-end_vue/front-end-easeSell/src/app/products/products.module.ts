@@ -7,7 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ContactPageComponent } from './pages/contact-page/contact-page.component';
 import { SellPageComponent } from './pages/sell-page/sell-page.component';
 import { ExplorePageComponent } from './pages/explore-page/explore-page.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessagePageComponent } from './pages/message-page/message-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
@@ -39,7 +39,8 @@ import { ChatsPageComponent } from './pages/chats-page/chats-page.component';
     CommonModule,
     ProductsRoutingModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
     ]
 })
 export class ProductsModule { }

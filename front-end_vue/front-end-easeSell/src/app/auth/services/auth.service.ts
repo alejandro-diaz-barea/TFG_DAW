@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../interfaces/user.interfaces';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 @Injectable({ providedIn: 'root' })
@@ -8,7 +10,7 @@ export class AuthService {
   private isLoggedIn: boolean = false;
   private currentUser?: User;
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   get isUserLoggedIn(): boolean {
     return this.isLoggedIn;
@@ -143,6 +145,26 @@ export class AuthService {
   }
 
 
+
+  updateUser(data: Partial<User>): Observable<User> {
+    const url = `http://127.0.0.1:8000/api/v1/users`;
+    const token = localStorage.getItem('accessToken');
+
+    if (!token) {
+      throw new Error('No se encontró ningún token en el almacenamiento local.');
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    // Agregamos el ID del usuario a los datos que se enviarán al backend
+    const requestData = { ...data, id: this.currentUser?.id };
+
+    return this.http.put<User>(url, requestData, { headers });
+  }
+
+
+  setCurrentUser(user: User): void {
+    this.currentUser = user;
+  }
 
   logout(): void {
     // Elimina el token del almacenamiento local al cerrar sesión

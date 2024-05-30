@@ -32,7 +32,7 @@ export class LoginPageComponent {
       .then(loggedIn => {
         if (loggedIn) {
           console.log('Inicio de sesión exitoso');
-          this.router.navigate(['']);
+          this.router.navigate(['/explore']);
         } else {
           this.loginError = 'Usuario o contraseña incorrectos';
         }
