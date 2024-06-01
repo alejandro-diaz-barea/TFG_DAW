@@ -2,14 +2,17 @@
   <h1 class="section-sell__title">Upload products</h1>
 
   <form [formGroup]="productForm" class="form">
+
     <label>
-      <input placeholder="Product name" type="text" formControlName="name" class="input input--text" (blur)="validateField('name')">
-      <p *ngIf="fieldErrors['name'] || (formSubmitted && !productForm.controls['name'].valid)" class="error-message error-message--visible">This field is required.</p>
+      <input placeholder="Product name" type="text" formControlName="name" class="input input--text" (input)="validateNameLength()" (blur)="validateField('name')">
+      <p *ngIf="fieldErrors['name'] || (formSubmitted && !productForm.controls['name'].valid && !nameMaxLengthReached)" class="error-message error-message--visible">This field is required.</p>
+      <p *ngIf="nameMaxLengthReached" class="error-message error-message--visible">max 20 caracteres.</p>
     </label>
 
     <label>
-      <input placeholder="Description..." type="text" formControlName="description" class="input input--text" (blur)="validateField('description')">
-      <p *ngIf="fieldErrors['description'] || (formSubmitted && !productForm.controls['description'].valid)" class="error-message error-message--visible">This field is required.</p>
+      <input placeholder="Description..." type="text" formControlName="description" class="input input--text" (input)="validateDescriptionLength()" (blur)="validateField('description')">
+      <p *ngIf="fieldErrors['description'] || (formSubmitted && !productForm.controls['description'].valid && !descriptionMaxLengthReached)" class="error-message error-message--visible">This field is required.</p>
+      <p *ngIf="descriptionMaxLengthReached" class="error-message error-message--visible">max 50 caracteres.</p>
     </label>
 
     <label>

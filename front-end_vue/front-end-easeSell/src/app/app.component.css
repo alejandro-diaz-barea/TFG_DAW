@@ -11,6 +11,21 @@ header.header {
   height: 11.328vh ;
 }
 
+
+header.dark-mode {
+  background-color: #276E90;
+  color: #000000;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 2.1875rem;
+  padding-right: 2.1875rem;
+  display: flex;
+  align-items: center;
+  font-family: 'Doppio One';
+  height: 11.328vh;
+}
+
+
 nav.header__nav {
   margin-left: 2rem;
 }
@@ -79,6 +94,7 @@ nav.header__nav {
   margin-right: 1rem;
   width: 1.5rem;
   height: 1.5rem;
+  cursor: pointer;
 
 }
 

@@ -1,5 +1,4 @@
-<ng-container *ngIf="authChecked">
-  <header class="header">
+  <header class="header" *ngIf="authChecked">
     <a routerLink="/" class="header__logo-link">
       <p class="header__logo-link_name">
         <span class="header__logo-link_name_bold">Ease</span>Sell
@@ -22,10 +21,12 @@
       </ul>
     </nav>
     <nav class="header__buttons">
-      <!-- Icono de Dark Mode -->
-      <a class="buttons_DarkMode">
-        <img class="ImagenDarkMode" src="../../../assets/modo-de-sueno.png" alt="darkmode">
-      </a>
+    <!-- Icono de Dark Mode -->
+    <a class="buttons_DarkMode" (click)="toggleDarkMode()">
+      <img class="ImagenDarkMode" [src]="darkMode ? '../../../assets/soleado.png' : '../../../assets/modo-de-sueno.png'" alt="darkmode">
+    </a>
+
+
       <button *ngIf="!user" routerLink="/auth/login" class="buttons__login">Login</button>
       <button *ngIf="!user" routerLink="/auth/new-account" class="buttons__signup">Sign up</button>
       <a routerLink="/chats" *ngIf="user" class="buttons_DarkMode">
@@ -60,13 +61,14 @@
 
     </nav>
 
-  <main>
-    <router-outlet></router-outlet>
+  <main *ngIf="authChecked">
+    <router-outlet ></router-outlet>
   </main>
 
-  <app-footer-component></app-footer-component>
-</ng-container>
+  <app-footer-component *ngIf="authChecked"></app-footer-component>
 
 <div *ngIf="!authChecked" class="spinner-container">
   <div class="spinner"></div>
 </div>
+
+

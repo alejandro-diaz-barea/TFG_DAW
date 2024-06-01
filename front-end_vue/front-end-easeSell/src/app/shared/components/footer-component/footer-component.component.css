@@ -11,6 +11,11 @@
   bottom: 0;
 }
 
+footer.dark-mode{
+  background-color: #276E90;
+
+}
+
 .footerFacebook{
   display: flex;
   justify-content: center;

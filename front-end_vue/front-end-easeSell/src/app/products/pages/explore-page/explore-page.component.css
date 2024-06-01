@@ -133,10 +133,11 @@
 
 .card__name {
   font-family: 'Battambang';
+  font-size: 20px;
 }
 
 .card__description {
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .card__price {

@@ -35,6 +35,8 @@ export class SellPageComponent implements OnDestroy {
   private successTimeout: any;
   productId: number | null = null;
   isUpdated: boolean | undefined;
+  nameMaxLengthReached: boolean = false;
+  descriptionMaxLengthReached: boolean = false;
 
 
   constructor(
@@ -66,6 +68,17 @@ export class SellPageComponent implements OnDestroy {
     });
   }
 
+   // Método para validar la longitud del nombre
+   validateNameLength() {
+    const nameValue = this.productForm.value.name;
+    this.nameMaxLengthReached = nameValue.length > 20;
+  }
+
+  // Método para validar la longitud de la descripción
+  validateDescriptionLength() {
+    const descriptionValue = this.productForm.value.description;
+    this.descriptionMaxLengthReached = descriptionValue.length > 50;
+  }
 
   loadProduct(id: number) {
     const token = localStorage.getItem('accessToken');
