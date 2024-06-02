@@ -33,8 +33,16 @@
   </ng-template>
 
   <app-pagination class="explore-section__pagination" [totalPages]="totalPages" (pageChanged)="loadProducts($event)"></app-pagination>
+
+  <div *ngIf="showErrorPopup" class="error-popup">
+    <p>{{ errorMessagePopUp }}</p>
+  </div>
+
+
 </section>
 
 <div *ngIf="showFilterPopup" class="explore-section__filter-popup-overlay">
   <app-filters (closePopup)="toggleFilterPopup()" (filterApplied)="handleFilterApplied($event)"></app-filters>
 </div>
+
+

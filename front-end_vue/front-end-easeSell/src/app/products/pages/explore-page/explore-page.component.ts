@@ -23,6 +23,8 @@ export class ExplorePageComponent implements OnInit {
   selectedCategories: number[] = [];
   showFilterPopup: boolean = false;
   errorMessage: string = '';
+  errorMessagePopUp: string= '';
+  showErrorPopup: boolean = false; // Propiedad agregada
 
   constructor(
     private authService: AuthService,
@@ -86,12 +88,6 @@ export class ExplorePageComponent implements OnInit {
     });
   }
 
-  goToLogin(): void {
-    if (!this.authService.isUserLoggedIn) {
-      this.router.navigate(['/auth/login']);
-    }
-  }
-
   searchProducts(searchTerm: string): void {
     this.searchTerm = searchTerm;
     this.loadProducts(1);
@@ -129,6 +125,10 @@ export class ExplorePageComponent implements OnInit {
   }
 
   contactSeller(sellerId: number): void {
+    if (!this.authService.isUserLoggedIn) {
+      this.router.navigate(['/auth/login']);
+      return;
+    }
     const token = localStorage.getItem('accessToken');
     if (token) {
       const headers = new HttpHeaders({
@@ -140,15 +140,29 @@ export class ExplorePageComponent implements OnInit {
       this.http.post('http://127.0.0.1:8000/api/v1/chats', payload, { headers })
         .subscribe(
           (response) => {
-            console.log('Chat creado:', response);
+            console.log('Chat created:', response);
             this.router.navigate(['/chats']);
           },
           (error) => {
-            console.error('Error al crear el chat:', error);
+            console.error('Error creating chat:', error);
+            // Show the error pop-up
+            if (error.error.message === 'You cannot chat with yourself.') {
+              this.errorMessagePopUp = 'You cannot chat with yourself.';
+            } else if (error.error.message === 'A chat already exists between these users.') {
+              this.errorMessagePopUp = 'A chat already exists between these users.';
+            } else {
+              this.errorMessagePopUp = 'An error occurred while creating the chat.';
+            }
+            this.showErrorPopup = true;
+            setTimeout(() => {
+              this.showErrorPopup = false;
+            }, 2000);
           }
         );
     } else {
-      console.error('Token de autenticación no encontrado.');
+      console.error('Authentication token not found.');
     }
   }
+
+
 }

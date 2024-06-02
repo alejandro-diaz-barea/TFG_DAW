@@ -17,32 +17,32 @@
   justify-content: center;
   margin: 0 auto;
   text-align: center;
+  max-width: 100%;
+
 }
 
 .card {
   display: flex;
+  flex-direction: row;
   width: 100%;
   max-width: 600px;
   margin: 20px;
-  border: 1px solid #000000;
+  border: 1px solid #000;
   border-radius: 1rem;
-  box-sizing: border-box;
   transition: transform 0.3s ease;
   overflow: hidden;
   height: 300px;
-  padding: 0;
 }
 
-.card__name {
-  font-family: 'Battambang';
+.card__name{
+  font-size: 20px;
 }
 
-.card__description {
-  font-size: 16px;
-}
-
+.card__name,
+.card__description,
 .card__price {
-  font-size: 16px;
+  margin: 5px 0;
+  text-align: center;
 }
 
 .card__img-container {
@@ -97,12 +97,12 @@
 }
 
 .card__content {
-  flex: 1;
-  padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding: 20px;
+  width: 60%;
 }
 
 .card-content h2 {
@@ -110,7 +110,7 @@
 }
 
 .delete {
-  width: 100px;
+  width: 200px;
   background-color: rgba(255, 0, 0, 0.626);
   color: rgb(0, 0, 0);
   padding: 10px 20px;
@@ -225,9 +225,6 @@
     height: 300px;
   }
   .card__description {
-    font-size: 11px;
-  }
-  .card__name {
     font-size: 15px;
   }
 }
@@ -237,10 +234,10 @@
     height: 300px;
   }
   .card__description {
-    font-size: 9px;
+    font-size: 14px;
   }
   .card__name {
-    font-size: 13px;
+    font-size: 20px;
   }
 }
 
@@ -249,10 +246,10 @@
     height: 300px;
   }
   .card__description {
-    font-size: 7px;
+    font-size: 13px;
   }
   .card__name {
-    font-size: 10px;
+    font-size: 12px;
   }
 }
 
@@ -261,7 +258,7 @@
     width: 500px;
   }
   .card__description {
-    font-size: 9px;
+    font-size: 11px;
   }
   .card__name {
     font-size: 12px;
@@ -286,7 +283,10 @@
     padding: 20px;
   }
 
-
+  .delete{
+    width: auto;
+    margin-top: 20px;
+  }
 
   .card__next-image-button {
     width: 25px;
@@ -340,4 +340,20 @@
   .explore-section__dropdown {
     display: none;
   }
+}
+
+
+@media only screen and (max-width: 400px) {
+  .card {
+    flex-direction: column;
+    width: 70%;
+    max-width: 70%;
+    margin: 10px auto;
+    height: auto;
+  }
+
+  .explore-section{
+    padding: 0px;
+  }
+
 }

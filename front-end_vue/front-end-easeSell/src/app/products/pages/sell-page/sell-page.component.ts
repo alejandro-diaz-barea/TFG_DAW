@@ -77,7 +77,7 @@ export class SellPageComponent implements OnDestroy {
   // Método para validar la longitud de la descripción
   validateDescriptionLength() {
     const descriptionValue = this.productForm.value.description;
-    this.descriptionMaxLengthReached = descriptionValue.length > 50;
+    this.descriptionMaxLengthReached = descriptionValue.length > 130;
   }
 
   loadProduct(id: number) {

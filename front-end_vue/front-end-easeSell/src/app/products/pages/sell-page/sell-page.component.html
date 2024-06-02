@@ -12,7 +12,7 @@
     <label>
       <input placeholder="Description..." type="text" formControlName="description" class="input input--text" (input)="validateDescriptionLength()" (blur)="validateField('description')">
       <p *ngIf="fieldErrors['description'] || (formSubmitted && !productForm.controls['description'].valid && !descriptionMaxLengthReached)" class="error-message error-message--visible">This field is required.</p>
-      <p *ngIf="descriptionMaxLengthReached" class="error-message error-message--visible">max 50 caracteres.</p>
+      <p *ngIf="descriptionMaxLengthReached" class="error-message error-message--visible">max 130 caracteres.</p>
     </label>
 
     <label>
