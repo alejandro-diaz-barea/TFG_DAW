@@ -5,4 +5,6 @@ export interface User {
   name:string,
   access_token:string,
   address:string,
+  logo_path: string;
+
 }

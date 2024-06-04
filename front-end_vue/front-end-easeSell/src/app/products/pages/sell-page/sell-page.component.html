@@ -6,7 +6,7 @@
     <label>
       <input placeholder="Product name" type="text" formControlName="name" class="input input--text" (input)="validateNameLength()" (blur)="validateField('name')">
       <p *ngIf="fieldErrors['name'] || (formSubmitted && !productForm.controls['name'].valid && !nameMaxLengthReached)" class="error-message error-message--visible">This field is required.</p>
-      <p *ngIf="nameMaxLengthReached" class="error-message error-message--visible">max 20 caracteres.</p>
+      <p *ngIf="nameMaxLengthReached" class="error-message error-message--visible">max 25 caracteres.</p>
     </label>
 
     <label>

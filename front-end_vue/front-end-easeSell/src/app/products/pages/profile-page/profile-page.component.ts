@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../../auth/interfaces/user.interfaces';
 import { Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-profile-page',
@@ -21,6 +23,13 @@ export class ProfilePageComponent {
   logout(): void {
     this.authService.logout();
     this.router.navigate(["/explore"]);
+  }
+
+
+
+  getUserLogoPath(): string {
+    const baseUrl = 'http://127.0.0.1:8000/';
+    return this.user?.logo_path ? `${baseUrl}${this.user.logo_path}` : '../../../../assets/profile-user.png';
   }
 
   get user(): User | undefined {
@@ -70,5 +79,41 @@ export class ProfilePageComponent {
         }
       );
     }
+  }
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    const formData = new FormData();
+    formData.append('photo', file);
+
+    // Obtener el token de autenticación del almacenamiento local
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (!accessToken) {
+      console.error('No se encontró ningún token de acceso en el almacenamiento local.');
+      return;
+    }
+
+    // Configurar los encabezados de la solicitud con el token de autenticación
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+
+    // Enviar la imagen al backend
+    this.http.post<any>('http://127.0.0.1:8000/api/v1/users/upload-photo', formData, { headers }).subscribe(
+      async (response) => {
+        if (response && response.user) {
+          console.log('Imagen subida exitosamente:', response);
+
+          // Actualizar la información del usuario después de una subida exitosa
+          const updatedUser: User = response.user;
+          this.authService.setCurrentUser(updatedUser);
+
+        } else {
+          console.error('Respuesta inválida del servidor:', response);
+        }
+      },
+      (error) => {
+        console.error('Error al subir la imagen:', error);
+      }
+    );
   }
 }

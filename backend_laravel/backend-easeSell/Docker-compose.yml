@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    command: --default-authentication-plugin=caching_sha2_password
+    restart: always
+    container_name: mysql_db
+    environment:
+      MYSQL_DATABASE: bd_easeSell
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/my.cnf
+    networks:
+      - laravel-network
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_HOST=mysql_db
+      - PMA_USER=root
+      - PMA_PASSWORD=password
+    depends_on:
+      - mysql
+    volumes:
+      - phpmyadmin_data:/sessions
+    networks:
+      - laravel-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+
+  laravel:
+    image: php:8.2-apache
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+    command: /bin/bash -c "docker-php-ext-install pdo_mysql && apache2-foreground"
+    networks:
+      - laravel-network
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+
+networks:
+  laravel-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  phpmyadmin_data:

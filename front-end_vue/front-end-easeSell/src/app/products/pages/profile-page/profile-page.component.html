@@ -1,8 +1,9 @@
 <section class="section-profile">
   <h1 class="section-profile__title">Profile</h1>
   <div class="profile-content">
-    <div class="section-profile__image-container">
-      <img src="../../../../assets/profile-user.png" alt="Profile Image" class="section-profile__image">
+    <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none">
+    <div class="section-profile__image-container" (click)="fileInput.click()">
+      <img [src]="getUserLogoPath()" alt="Profile Image" class="section-profile__image">
     </div>
     <div class="section-profile__details">
       <h2 class="section-profile__details-title">Details:</h2>

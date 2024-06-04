@@ -7,12 +7,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
+        // Excluir la ruta store del middleware auth:api
+        $this->middleware('auth:api', ['except' => ['store']]);
     }
 
     public function index()
@@ -40,6 +44,9 @@ class UserController extends Controller
 
             $data['password'] = Hash::make($data['password']);
 
+            // Establecer el valor predeterminado para logo_path si no se proporciona
+            $data['logo_path'] = $request->input('logo_path', 'user_photos/default/profile-user.png');
+
             $user = User::create($data);
             return response()->json(['message' => 'Cuenta creada con éxito', 'user' => $user], 201);
         } catch (ValidationException $e) {
@@ -47,7 +54,59 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error al crear la cuenta', 'message' => $e->getMessage()], 500);
         }
+
+
+
     }
+
+
+    public function uploadPhoto(Request $request)
+    {
+        try {
+            // Validar que se haya enviado una imagen
+            $request->validate([
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
+            // Obtener el usuario autenticado
+            $user = Auth::user();
+
+            // Obtener la imagen del formulario
+            $photo = $request->file('photo');
+
+            // Eliminar la imagen anterior si existe
+            try {
+                $previousPhotoPath = $user->logo_path;
+                if ($previousPhotoPath) {
+                    Storage::delete($previousPhotoPath);
+                }
+            } catch (\Exception $e) {
+                // Manejar la excepción
+                return response()->json(['error' => 'Error al eliminar la imagen anterior', 'message' => $e->getMessage()], 500);
+            }
+
+            // Crear una nueva carpeta para el usuario
+            $userFolderPath = 'user_photos/' . $user->id . '_' . Str::slug($user->name);
+            Storage::makeDirectory($userFolderPath);
+
+            // Generar un nombre único para la imagen
+            $imageName = time() . '_' . $photo->getClientOriginalName();
+
+            // Almacenar la imagen en la carpeta del usuario con un nombre único
+            $photoPath = $photo->storeAs($userFolderPath, $imageName, 'public');
+
+            // Actualizar el campo logo_path del usuario con la ruta de la imagen
+            $user->logo_path = 'storage/' . $photoPath;
+            $user->save();
+
+            return response()->json(['message' => 'Imagen subida correctamente', 'photo_path' => $photoPath, 'user' => $user], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al subir la imagen', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+
+
 
     public function update(Request $request)
     {
@@ -76,7 +135,6 @@ class UserController extends Controller
             return response()->json(['error' => 'Error al actualizar el usuario', 'message' => $e->getMessage()], 500);
         }
     }
-
 
     public function destroy($id)
     {

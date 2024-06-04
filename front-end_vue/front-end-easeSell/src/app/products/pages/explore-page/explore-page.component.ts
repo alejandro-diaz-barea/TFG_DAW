@@ -59,6 +59,7 @@ export class ExplorePageComponent implements OnInit {
         }
       }),
       map((response: any) => {
+        console.log(response)
         if (response.data && Array.isArray(response.data.data)) {
           console.log(response.data)
           return response.data.data.map((product: Product) => ({
@@ -67,6 +68,7 @@ export class ExplorePageComponent implements OnInit {
             productImages: JSON.parse(product.image_path).map((imagePath: string) =>
               'http://127.0.0.1:8000' + imagePath.replace('/storage', '/storage')
             )
+
           }));
         } else {
           console.error('Unexpected response structure:', response);

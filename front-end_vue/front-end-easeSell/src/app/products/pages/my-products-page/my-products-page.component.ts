@@ -60,7 +60,7 @@ export class MyProductsPageComponent implements OnInit {
       }),
       catchError(error => {
         console.error('Error al obtener los productos:', error);
-        this.errorMessage = 'Productos no encontrados';
+        this.errorMessage = 'Products not found';
         return of([]);
       })
     ).subscribe((products: any[]) => {
@@ -69,7 +69,7 @@ export class MyProductsPageComponent implements OnInit {
     }, error => {
       // Handle HTTP request error here
       console.error('Error en la solicitud HTTP:', error);
-      this.errorMessage = 'Productos no encontrados';
+      this.errorMessage = 'Products not found';
     });
   }
 

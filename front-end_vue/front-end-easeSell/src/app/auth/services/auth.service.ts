@@ -34,12 +34,12 @@ export class AuthService {
       console.log('Response data:', responseData);
 
       if (response.ok) {
-        const { access_token, address, id, name , email} = responseData;
+        const { access_token, address, id, name , email, logo_path} = responseData;
 
         // Almacena el token en el almacenamiento local del navegador
         localStorage.setItem('accessToken', access_token);
 
-        this.currentUser = { access_token, address, id, name, email };
+        this.currentUser = { access_token, address, id, name, email , logo_path};
 
         this.isLoggedIn = true;
         return true;
@@ -113,12 +113,12 @@ export class AuthService {
         // Verifica si se reciben todos los datos necesarios para considerar al usuario autenticado
         if (responseData && responseData.name && responseData.address && responseData.email) {
           console.log('El usuario está autenticado. Actualizando datos de usuario.');
-          const { access_token, address, id, name , email} = responseData;
+          const { access_token, address, id, name , email, logo_path} = responseData;
 
            // Almacena el token en el almacenamiento local del navegador
           localStorage.setItem('accessToken', access_token);
 
-          this.currentUser = { access_token, address, id, name, email };
+          this.currentUser = { access_token, address, id, name, email,logo_path  };
 
           this.isLoggedIn = true;
         } else {

@@ -71,7 +71,7 @@ export class SellPageComponent implements OnDestroy {
    // Método para validar la longitud del nombre
    validateNameLength() {
     const nameValue = this.productForm.value.name;
-    this.nameMaxLengthReached = nameValue.length > 20;
+    this.nameMaxLengthReached = nameValue.length > 25;
   }
 
   // Método para validar la longitud de la descripción

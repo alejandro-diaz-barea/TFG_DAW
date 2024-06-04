@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\V1\Controller;
@@ -30,7 +29,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         // Verifica si las credenciales son válidas y si la contraseña es correcta
-        if (! $token = JWTAuth::attempt($credentials)) {
+        if (!$token = JWTAuth::attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -131,6 +130,7 @@ class AuthController extends Controller
             'address'=> optional($user)->address,
             'email' => optional($user)->email,
             'phone' => optional($user)->phone,
+            'logo_path' => optional($user)->logo_path,
         ]);
     }
 }
