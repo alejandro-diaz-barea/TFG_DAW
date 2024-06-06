@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as Pusher from 'pusher-js';
@@ -10,13 +10,16 @@ import { AuthService } from '../../../auth/services/auth.service';
   templateUrl: './message-page.component.html',
   styleUrls: ['./message-page.component.css']
 })
-export class MessagePageComponent implements OnInit, OnDestroy {
+export class MessagePageComponent implements OnInit, OnDestroy, AfterViewChecked {
   chatId: string | null = null;
+  chatName: string = '';
+  chatPhotoUrl: string = '';
   messages: any[] = [];
   newMessage: string = '';
   pusherChannel: Pusher.Channel | null = null;
   messageForm!: FormGroup;
-  chatName: string = ''; // Definir la propiedad chatName
+
+  @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,9 +39,11 @@ export class MessagePageComponent implements OnInit, OnDestroy {
 
     this.route.queryParams.subscribe(params => {
       this.chatId = params['chatId'];
-      this.chatName = params['otherName']; // Asignar el valor de chatName desde los parámetros de la URL
+      this.chatName = params['otherName'];
+      this.chatPhotoUrl = params['url_photo'];
       console.log('Chat ID:', this.chatId);
       console.log('Chat Name:', this.chatName);
+      console.log('Chat Photo URL:', this.chatPhotoUrl);
       this.fetchMessages();
       this.initializePusher();
     });
@@ -50,6 +55,10 @@ export class MessagePageComponent implements OnInit, OnDestroy {
       this.pusherChannel.unbind_all();
       this.pusherChannel.unsubscribe();
     }
+  }
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
   }
 
   fetchMessages(): void {
@@ -65,6 +74,7 @@ export class MessagePageComponent implements OnInit, OnDestroy {
             (response) => {
               console.log('Response from server:', response);
               this.messages = response;
+              this.scrollToBottom();
             },
             (error) => {
               console.error('Error al obtener los mensajes:', error);
@@ -96,6 +106,7 @@ export class MessagePageComponent implements OnInit, OnDestroy {
             (response) => {
               console.log('Message sent successfully:', response);
               this.messageForm.reset();
+              this.fetchMessages(); // Refresh messages after sending
             },
             (error) => {
               console.error('Error al enviar el mensaje:', error);
@@ -118,9 +129,18 @@ export class MessagePageComponent implements OnInit, OnDestroy {
         this.pusherChannel.bind('message-sent', (data: any) => {
           console.log('Received message-sent event:', data);
           this.messages.push(data);
+          this.scrollToBottom();
           console.log('Updated messages:', this.messages);
         });
       }
+    }
+  }
+
+  private scrollToBottom(): void {
+    try {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    } catch (err) {
+      console.error('Could not scroll to bottom:', err);
     }
   }
 }

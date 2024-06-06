@@ -19,7 +19,8 @@ export class RegisterPageComponent {
       repeat_password: ['', [Validators.required]],
       name: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      phone_number: ['', [Validators.required]]
+      phone_number: ['', [Validators.required]],
+      terms: [false, Validators.requiredTrue] 
     });
 
     Object.keys(this.registerForm.controls).forEach(key => {

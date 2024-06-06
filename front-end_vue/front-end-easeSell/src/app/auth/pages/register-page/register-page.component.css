@@ -1,5 +1,4 @@
 
-/* Contenedor */
 .register-container {
   display: flex;
   min-height: 72.1vh;
@@ -56,6 +55,31 @@
 .register-form__input::placeholder{
   color: black;
 }
+
+.checkbox-container {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  margin-top: 10px;
+  margin-left: 0;
+}
+
+.register-form__label {
+  margin-left: 5px;
+  width: 90%;
+  font-size: 13px;
+}
+
+.register-form__input[type="checkbox"] {
+  margin-right: 5px;
+  width: 10px;
+  margin-bottom: 0;
+  margin-left: 0;
+
+}
+
+
+
 
 
 .register-form__error-message{

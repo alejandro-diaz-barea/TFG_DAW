@@ -73,8 +73,7 @@ export class AuthService {
         return { success: true };
       } else {
         if (response.status === 422) {
-          // Error de validación, extraer errores del cuerpo de la respuesta
-          const validationErrors = responseData['message']; // Acceso seguro con corchetes
+          const validationErrors = responseData['message']; 
           return { success: false, errors: validationErrors };
         } else {
           // Otro tipo de error
