@@ -1,6 +1,7 @@
   import { Component, OnInit, Renderer2 } from '@angular/core';
   import { AuthService } from './auth/services/auth.service';
   import { Router } from '@angular/router';
+import { User } from './auth/interfaces/user.interfaces';
 
   @Component({
     selector: 'app-root',
@@ -59,4 +60,22 @@
         }
       });
     }
+
+
+    getUserLogoPath(): string {
+      const baseUrl = 'http://127.0.0.1:8000/';
+      return this.userLogo?.logo_path ? `${baseUrl}${this.userLogo.logo_path}` : '../../../../assets/profile-user.png';
+    }
+
+    get userLogo(): User | undefined {
+      return this.authService.currentUserInfo;
+    }
+
+
+
+    get isAdmin(): boolean | undefined {
+      return this.authService.currentUserInfo?.is_super;
+    }
+
+
   }

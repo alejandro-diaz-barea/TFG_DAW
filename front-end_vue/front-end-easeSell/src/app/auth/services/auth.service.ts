@@ -34,23 +34,26 @@ export class AuthService {
       console.log('Response data:', responseData);
 
       if (response.ok) {
-        const { access_token, address, id, name , email, logo_path} = responseData;
+        const { access_token, address, id, name, email, logo_path, is_super, is_banned } = responseData;
 
-        // Almacena el token en el almacenamiento local del navegador
         localStorage.setItem('accessToken', access_token);
 
-        this.currentUser = { access_token, address, id, name, email , logo_path};
+        this.currentUser = { access_token, address, id, name, email, logo_path, is_super };
 
         this.isLoggedIn = true;
         return true;
       } else {
-        return false;
+        if (response.status === 403) {
+          throw new Error('User is banned');
+        } else {
+          throw new Error('HTTP error: ' + response.status);
+        }
       }
     } catch (error) {
-      console.error('Error during login:', error);
-      return false;
+      throw error;
     }
   }
+
 
 
   async register(userData: { name: string, email: string, password: string, address: string, phone_number: string }): Promise<{ success: boolean, errors?: any }> {
@@ -93,7 +96,6 @@ export class AuthService {
 
     if (!token) {
       console.log('No se encontró ningún token en el almacenamiento local.');
-      // Si no hay token en el local, el usuario no está autenticado
       return false;
     }
 
@@ -106,43 +108,31 @@ export class AuthService {
       });
 
       if (response.ok) {
-        console.log('La solicitud de comprobación de token fue exitosa.');
         const responseData = await response.json();
-        console.log('Datos de respuesta:', responseData);
-
-        // Verifica si se reciben todos los datos necesarios para considerar al usuario autenticado
         if (responseData && responseData.name && responseData.address && responseData.email) {
-          console.log('El usuario está autenticado. Actualizando datos de usuario.');
-          const { access_token, address, id, name , email, logo_path} = responseData;
-
-           // Almacena el token en el almacenamiento local del navegador
+          const { access_token, address, id, name, email, logo_path, is_super} = responseData;
           localStorage.setItem('accessToken', access_token);
-
-          this.currentUser = { access_token, address, id, name, email,logo_path  };
-
+          this.currentUser = { access_token, address, id, name, email, logo_path, is_super };
           this.isLoggedIn = true;
+          return true;
         } else {
-          console.log('Los datos de usuario recibidos son incompletos.');
           this.isLoggedIn = false;
           this.currentUser = undefined;
+          return false;
         }
       } else {
-        console.log('La solicitud de comprobación de token no fue exitosa. El usuario no está autenticado.');
-        // En caso de respuesta no exitosa, no está autenticado
         this.isLoggedIn = false;
         this.currentUser = undefined;
         return false;
       }
     } catch (error) {
       console.error('Error during checkAuthStatus:', error);
-      // En caso de error, no está autenticado
       this.isLoggedIn = false;
       this.currentUser = undefined;
       return false;
     }
-
-    return false;
   }
+
 
 
 

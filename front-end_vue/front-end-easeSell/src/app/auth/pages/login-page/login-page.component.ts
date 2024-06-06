@@ -22,26 +22,30 @@ export class LoginPageComponent {
     const password = this.loginForm.get('password')?.value;
 
     if (!email.trim() || !password.trim()) {
-      this.loginError = 'Por favor, complete todos los campos.';
+      this.loginError = 'Please fill in all the fields.';
       return;
     }
 
     this.loginError = '';
 
     this.authService.login(email, password)
-      .then(loggedIn => {
-        if (loggedIn) {
-          console.log('Inicio de sesión exitoso');
-          this.router.navigate(['/explore']);
-        } else {
-          this.loginError = 'Usuario o contraseña incorrectos';
-        }
-      })
-      .catch(error => {
-        console.error('Error al iniciar sesión:', error);
-        this.loginError = 'Error durante el inicio de sesión';
-      });
+    .then(loggedIn => {
+      if (loggedIn) {
+        this.router.navigate(['/explore']);
+      } else {
+        this.loginError = 'Incorrect username or password';
+      }
+    })
+    .catch(error => {
+      if (error.message === 'User is banned') {
+        this.loginError = 'User is banned';
+      } else {
+        this.loginError = 'Incorrect username or password';
+      }
+    });
+
   }
+
 
 
   isFieldEmpty(fieldName: string): boolean {

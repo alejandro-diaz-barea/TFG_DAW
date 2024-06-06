@@ -26,7 +26,8 @@
           <h2 class="card__name">{{ product?.name }}</h2>
           <p class="card__description">Description: {{ product?.description }}</p>
           <p class="card__price">Price: ${{ product?.price }}</p>
-          <button class="card__buy" (click)="contactSeller(product.seller_id)">Contact Seller</button>
+          <button class="card__buy" (click)="contactSeller(product.seller_id)" *ngIf="!isAdmin">Contact Seller</button>
+          <button class="delete__product" *ngIf="isAdmin" (click)="deleteProduct(product.id)">Delete product</button>
         </div>
       </article>
     </div>
@@ -37,12 +38,8 @@
   <div *ngIf="showErrorPopup" class="error-popup">
     <p>{{ errorMessagePopUp }}</p>
   </div>
-
-
 </section>
 
 <div *ngIf="showFilterPopup" class="explore-section__filter-popup-overlay">
   <app-filters (closePopup)="toggleFilterPopup()" (filterApplied)="handleFilterApplied($event)"></app-filters>
 </div>
-
-

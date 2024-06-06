@@ -5,7 +5,6 @@ import { inject } from "@angular/core";
 export const PrivateGuard: CanActivateChildFn = (route, state) =>{
 
 
-
   const authService = inject(AuthService)
   const router = inject(Router)
 

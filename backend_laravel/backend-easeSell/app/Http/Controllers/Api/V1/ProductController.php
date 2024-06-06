@@ -231,14 +231,15 @@ private function storeImage($image, $product)
    {
        // Obtener el ID del usuario autenticado
        $userId = auth()->id();
+       $user = auth()->user();
 
-       // Verificar si el usuario es propietario del producto
+       // Verificar si el usuario es propietario del producto o superusuario
        $product = Product::find($id);
        if (!$product) {
            return response()->json(['message' => 'Producto no encontrado.'], 404);
        }
 
-       if ($product->seller_id !== $userId) {
+       if ($product->seller_id !== $userId && !$user->is_super) {
            return response()->json(['message' => 'No tienes permiso para eliminar este producto.'], 403);
        }
 

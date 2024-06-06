@@ -159,6 +159,24 @@
   background-color: #276f90a0;
 }
 
+.delete__product{
+  width: 200px;
+  background-color: red;
+  color: rgb(255, 255, 255);
+  padding: 10px 20px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Bevan';
+}
+
+.delete__product:hover{
+  background-color: rgb(170, 0, 0);
+
+}
+
 
 .error-popup {
   position: fixed;
@@ -268,6 +286,11 @@
     margin-top: 20px;
   }
 
+  .delete__product{
+    width: auto;
+    margin-top: 20px;
+  }
+
   .card__next-image-button {
     width: 25px;
     height: 25px;
@@ -310,6 +333,11 @@
   }
 
   .card__buy {
+    width: auto;
+    margin-top: 20px;
+  }
+
+  .delete__product{
     width: auto;
     margin-top: 20px;
   }

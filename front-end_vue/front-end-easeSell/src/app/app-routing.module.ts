@@ -14,6 +14,11 @@ const routes: Routes = [
     loadChildren: () => import('./products/products.module').then(m => m.ProductsModule),
   },
   {
+
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+  },
+  {
     path: '404',
     component:Error404PageComponent
   },
@@ -22,6 +27,11 @@ const routes: Routes = [
     redirectTo:'product',
     pathMatch: 'full'
   },
+  // {
+
+
+
+  // },
   {
     path: '**',
     redirectTo:'404'

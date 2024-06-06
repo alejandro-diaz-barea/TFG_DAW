@@ -45,7 +45,7 @@ class UserController extends Controller
             $data['password'] = Hash::make($data['password']);
 
             // Establecer el valor predeterminado para logo_path si no se proporciona
-            $data['logo_path'] = $request->input('logo_path', 'user_photos/default/profile-user.png');
+            $data['logo_path'] = $request->input('logo_path', 'storage/user_photos/default/profile-user.png');
 
             $user = User::create($data);
             return response()->json(['message' => 'Cuenta creada con éxito', 'user' => $user], 201);
@@ -141,4 +141,78 @@ class UserController extends Controller
         User::destroy($id);
         return response()->json(null, 204);
     }
+
+
+    public function indexAdmin()
+    {
+        // Verifica si el usuario autenticado es superusuario
+        $user = Auth::user();
+        if (!$user->is_super) {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 403);
+        }
+
+        // Obtiene todos los usuarios excepto el usuario autenticado
+        $users = User::where('id', '!=', $user->id)->get();
+
+        // Agrega la información sobre si el usuario está baneado o no
+        $users->each(function ($user) {
+            $user->is_banned = $user->is_banned ? true : false;
+        });
+
+        return response()->json($users);
+    }
+
+
+
+
+
+    public function banUser($id)
+    {
+        $currentUser = Auth::user();
+        if (!$currentUser->is_super) {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 403);
+        }
+
+        $user = User::findOrFail($id);
+
+        // Si el usuario ya está baneado, lo desbaneamos
+        if ($user->is_banned) {
+            $user->is_banned = false;
+            $user->save();
+            return response()->json(['message' => 'Usuario desbaneado con éxito'], 200);
+        }
+
+        $user->is_banned = true;
+        $user->save();
+
+        return response()->json(['message' => 'Usuario baneado con éxito'], 200);
+    }
+
+
+    public function changeUserRole(Request $request, $id)
+{
+    try {
+        $currentUser = Auth::user();
+        if (!$currentUser->is_super) {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 403);
+        }
+
+        $request->validate([
+            'is_super' => 'required|boolean'
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->is_super = $request->is_super;
+        $user->save();
+
+        return response()->json(['message' => 'Rol de usuario cambiado con éxito'], 200);
+    } catch (ValidationException $e) {
+        return response()->json(['error' => 'Error de validación', 'message' => $e->validator->errors()], 422);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Error al cambiar el rol del usuario', 'message' => $e->getMessage()], 500);
+    }
+}
+
+
+
 }

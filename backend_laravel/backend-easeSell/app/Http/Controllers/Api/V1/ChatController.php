@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Chat;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +17,11 @@ class ChatController extends Controller
     {
         $user_id = Auth::id();
 
-        $chats = Chat::with('user1', 'user2')
+        $chats = Chat::with(['user1' => function ($query) {
+                        $query->select('id', 'name', 'logo_path'); // Seleccionar solo las columnas necesarias
+                    }, 'user2' => function ($query) {
+                        $query->select('id', 'name', 'logo_path'); // Seleccionar solo las columnas necesarias
+                    }])
                      ->where('idusuario1', $user_id)
                      ->orWhere('idusuario2', $user_id)
                      ->get();
@@ -26,10 +29,15 @@ class ChatController extends Controller
         return response()->json($chats);
     }
 
-
     public function show($id)
     {
-        $chat = Chat::with('user1', 'user2')->findOrFail($id);
+        $chat = Chat::with(['user1' => function ($query) {
+                        $query->select('id', 'name', 'logo_path'); // Seleccionar solo las columnas necesarias
+                    }, 'user2' => function ($query) {
+                        $query->select('id', 'name', 'logo_path'); // Seleccionar solo las columnas necesarias
+                    }])
+                    ->findOrFail($id);
+
         return response()->json($chat);
     }
 
@@ -66,7 +74,6 @@ class ChatController extends Controller
 
         return response()->json($chat, 201);
     }
-
 
     public function update(Request $request, $id)
     {

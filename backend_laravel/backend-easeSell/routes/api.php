@@ -37,6 +37,11 @@ Route::prefix('v1')->group(function () {
     Route::post('users/upload-photo', [UserController::class, 'uploadPhoto']);
 
 
+    Route::post('users/{id}/ban', [UserController::class, 'banUser']);
+    Route::post('users/{id}/change-role', [UserController::class, 'changeUserRole']);
+    Route::get('admin/users', [UserController::class, 'indexAdmin']);
+
+
 
     // Rutas de productos
     Route::get('products', [ProductController::class, 'index']);
@@ -45,6 +50,7 @@ Route::prefix('v1')->group(function () {
     Route::put('products/{id}', [ProductController::class, 'update']);
     Route::delete('products/{id}', [ProductController::class, 'destroy']);
     Route::get('user-products', [ProductController::class, 'getUserProducts']);
+
 
 
 
@@ -75,4 +81,9 @@ Route::prefix('v1')->group(function () {
     Route::get('product-categories/{id}', [ProductCategoryController::class, 'show']);
     Route::put('product-categories/{id}', [ProductCategoryController::class, 'update']);
     Route::delete('product-categories/{id}', [ProductCategoryController::class, 'destroy']);
+
+
+
+
+
 });

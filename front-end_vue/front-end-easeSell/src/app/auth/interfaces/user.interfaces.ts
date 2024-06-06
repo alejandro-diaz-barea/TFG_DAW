@@ -6,5 +6,5 @@ export interface User {
   access_token:string,
   address:string,
   logo_path: string;
-
+  is_super:boolean
 }

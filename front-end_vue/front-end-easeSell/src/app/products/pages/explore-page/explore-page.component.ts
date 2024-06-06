@@ -59,16 +59,13 @@ export class ExplorePageComponent implements OnInit {
         }
       }),
       map((response: any) => {
-        console.log(response)
         if (response.data && Array.isArray(response.data.data)) {
-          console.log(response.data)
           return response.data.data.map((product: Product) => ({
             ...product,
             currentImageIndex: 0,
             productImages: JSON.parse(product.image_path).map((imagePath: string) =>
               'http://127.0.0.1:8000' + imagePath.replace('/storage', '/storage')
             )
-
           }));
         } else {
           console.error('Unexpected response structure:', response);
@@ -84,7 +81,6 @@ export class ExplorePageComponent implements OnInit {
       this.products$ = of(products);
       this.filteredProducts$ = of(products);
     }, error => {
-      // Handle HTTP request error here
       console.error('HTTP request error:', error);
       this.errorMessage = 'Products not found';
     });
@@ -147,7 +143,6 @@ export class ExplorePageComponent implements OnInit {
           },
           (error) => {
             console.error('Error creating chat:', error);
-            // Show the error pop-up
             if (error.error.message === 'You cannot chat with yourself.') {
               this.errorMessagePopUp = 'You cannot chat with yourself.';
             } else if (error.error.message === 'A chat already exists between these users.') {
@@ -166,5 +161,29 @@ export class ExplorePageComponent implements OnInit {
     }
   }
 
+  get isAdmin(): boolean | undefined {
+    return this.authService.currentUserInfo?.is_super;
+  }
 
+  deleteProduct(productId: number): void {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      console.error('Token de autenticación no encontrado.');
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    this.http.delete<any>(`http://127.0.0.1:8000/api/v1/products/${productId}`, { headers }).subscribe(
+      () => {
+        console.log('Producto eliminado:', productId);
+        this.loadProducts(this.currentPage);
+      },
+      error => {
+        console.error('Error al eliminar el producto:', error);
+      }
+    );
+  }
 }

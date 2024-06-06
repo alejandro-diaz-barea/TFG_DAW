@@ -9,11 +9,14 @@
         <li class="nav__item">
           <a routerLink="/explore" class="nav__link">explore</a>
         </li>
-        <li class="nav__item">
+        <li class="nav__item"  *ngIf="!isAdmin" >
           <a routerLink="/sell" class="nav__link" (click)="goToLogin()">sell</a>
         </li>
-        <li class="nav__item">
+        <li class="nav__item" *ngIf="!isAdmin" >
           <a routerLink="/my-products" class="nav__link" (click)="goToLogin()">my products</a>
+        </li>
+        <li class="nav__item"  *ngIf="isAdmin" >
+          <a routerLink="/admin/users" class="nav__link">users</a>
         </li>
         <li class="nav__item">
           <a routerLink="/contact" class="nav__link">contact</a>
@@ -26,13 +29,14 @@
       <img class="ImagenDarkMode" [src]="darkMode ? '../../../assets/soleado.png' : '../../../assets/modo-de-sueno.png'" alt="darkmode">
     </a>
 
-
       <button *ngIf="!user" routerLink="/auth/login" class="buttons__login">Login</button>
       <button *ngIf="!user" routerLink="/auth/new-account" class="buttons__signup">Sign up</button>
       <a routerLink="/chats" *ngIf="user" class="buttons_DarkMode">
-        <img class="ImagenDarkMode" src="../../../assets/comentario.png" alt="darkmode">
+        <img class="ImagenDarkMode" src="../../../assets/comentario.png" alt="darkmode" *ngIf="!isAdmin">
       </a>
-      <button routerLink="/profile" *ngIf="user" class="buttons__user">{{ userInfo }}</button>
+      <button routerLink="/profile" *ngIf="user" class="buttons__user">
+        <img [src]="getUserLogoPath()" class="buttons_user_img">{{ userInfo }}
+      </button>
     </nav>
     <!-- Icono de hamburguesa para mostrar el menú desplegable -->
     <div class="hamburger-icon" (click)="toggleMenu()">
