@@ -2,6 +2,8 @@
 
 ## EaseSell
 
+## Tutor: Abel Muñoz Rivas
+
 ## Índice
 
 1. [Introducción](#1-introducción)
