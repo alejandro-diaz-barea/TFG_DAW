@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileHandle } from '../../interfaces/file-handle.model';
 import { Product } from '../../interfaces/product.interface';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-sell-page',
@@ -42,7 +43,8 @@ export class SellPageComponent implements OnDestroy {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authservice : AuthService
 
   ) {
     this.productForm = this.fb.group({
@@ -80,8 +82,15 @@ export class SellPageComponent implements OnDestroy {
     this.descriptionMaxLengthReached = descriptionValue.length > 130;
   }
 
+
+  get token(){
+    return this.authservice.currentUserInfo?.access_token
+  }
+
+
   loadProduct(id: number) {
-    const token = localStorage.getItem('accessToken');
+
+    const token = this.token
     if (token) {
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${token}`
@@ -94,9 +103,6 @@ export class SellPageComponent implements OnDestroy {
             description: product.description,
             price: product.price
           });
-
-
-
 
         },
         error => {
@@ -168,7 +174,7 @@ export class SellPageComponent implements OnDestroy {
       formData.append(`categories[${index}]`, categoryId);
     });
 
-    const token = localStorage.getItem('accessToken');
+    const token = this.token
 
     if (token) {
       const headers = new HttpHeaders({

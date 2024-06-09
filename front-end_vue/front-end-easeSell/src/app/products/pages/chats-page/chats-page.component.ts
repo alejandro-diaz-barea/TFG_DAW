@@ -18,7 +18,7 @@ export class ChatsPageComponent implements OnInit {
   }
 
   fetchChats(): void {
-    const token = localStorage.getItem('accessToken');
+    const token = this.authService.currentUserInfo?.access_token
     if (token) {
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${token}`

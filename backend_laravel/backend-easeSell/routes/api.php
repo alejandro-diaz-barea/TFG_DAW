@@ -21,6 +21,8 @@ use App\Http\Controllers\Api\V1\CategoryController;
 */
 
 Route::prefix('v1')->group(function () {
+
+
     // Rutas de autenticación
     Route::prefix('auth')->group(function () {
         Route::post('login', [AuthController::class, 'login']);

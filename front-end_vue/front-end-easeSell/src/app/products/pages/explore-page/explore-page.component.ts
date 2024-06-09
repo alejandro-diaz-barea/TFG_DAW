@@ -122,12 +122,16 @@ export class ExplorePageComponent implements OnInit {
     }
   }
 
+  get token(){
+    return this.authService.currentUserInfo?.access_token
+  }
+
   contactSeller(sellerId: number): void {
     if (!this.authService.isUserLoggedIn) {
       this.router.navigate(['/auth/login']);
       return;
     }
-    const token = localStorage.getItem('accessToken');
+    const token = this.token
     if (token) {
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${token}`
@@ -166,7 +170,7 @@ export class ExplorePageComponent implements OnInit {
   }
 
   deleteProduct(productId: number): void {
-    const token = localStorage.getItem('accessToken');
+    const token = this.token
     if (!token) {
       console.error('Token de autenticación no encontrado.');
       return;

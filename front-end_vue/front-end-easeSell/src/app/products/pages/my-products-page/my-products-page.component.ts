@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Product } from '../../interfaces/product.interface';
+import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-my-products-page',
@@ -17,14 +18,19 @@ export class MyProductsPageComponent implements OnInit {
   // Variable para almacenar el producto que se va a eliminar
   productToDelete: Product | null = null;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authservice: AuthService) { }
 
   ngOnInit(): void {
     this.loadMyProducts();
   }
 
+  get token(){
+    return this.authservice.currentUserInfo?.access_token
+  }
+
+
   loadMyProducts(): void {
-    const token = localStorage.getItem('accessToken');
+    const token = this.token
 
     if (!token) {
       console.error('Token de autenticación no encontrado.');
@@ -94,7 +100,7 @@ deleteProduct(): void {
   if (this.productToDelete) {
     const productId = this.productToDelete.id;
 
-    const token = localStorage.getItem('accessToken');
+    const token = this.token
 
     if (!token) {
       console.error('Token de autenticación no encontrado.');

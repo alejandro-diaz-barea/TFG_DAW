@@ -29,6 +29,7 @@ export class ProfilePageComponent {
 
   getUserLogoPath(): string {
     const baseUrl = 'http://127.0.0.1:8000/';
+    console.log(baseUrl + this.user?.logo_path)
     return this.user?.logo_path ? `${baseUrl}${this.user.logo_path}` : '../../../../assets/profile-user.png';
   }
 
@@ -50,24 +51,24 @@ export class ProfilePageComponent {
     this.editingValue = '';
   }
 
+  get token(){
+    return this.authService.currentUserInfo?.access_token
+  }
+
   updateDetail(): void {
     if (this.editingField && this.editingValue) {
       const updatedData: Partial<User> = {};
 
-      // Asegurarse de que el campo editado sea válido y exista en la interfaz User
       if (this.editingField === 'name' || this.editingField === 'address') {
         updatedData[this.editingField] = this.editingValue;
       }
 
       this.authService.updateUser(updatedData).subscribe(
-        (response: any) => { // Cambiado a 'any' para evitar errores de tipo
+        (response: any) => {
           console.log(response);
-          // Verifica si la propiedad 'user' existe en la respuesta
           if ('user' in response) {
-            // Actualiza la información del usuario en el AuthService
             this.authService.setCurrentUser(response['user']);
 
-            // Verifica si el token se ha actualizado en la respuesta y guárdalo en el almacenamiento local
             if ('access_token' in response) {
               localStorage.setItem('accessToken', response['access_token']);
             }
@@ -86,15 +87,13 @@ export class ProfilePageComponent {
     const formData = new FormData();
     formData.append('photo', file);
 
-    // Obtener el token de autenticación del almacenamiento local
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = this.token
 
     if (!accessToken) {
       console.error('No se encontró ningún token de acceso en el almacenamiento local.');
       return;
     }
 
-    // Configurar los encabezados de la solicitud con el token de autenticación
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
     // Enviar la imagen al backend

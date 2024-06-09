@@ -15,8 +15,12 @@ export class UsersComponent implements OnInit {
     this.getAllUsers();
   }
 
+  get token(){
+    return this.authService.currentUserInfo?.access_token
+  }
+
   getAllUsers(): void {
-    const token = localStorage.getItem('accessToken');
+    const token = this.token
     if (!token) {
       console.error('Token de acceso no encontrado en el localStorage');
       return;
@@ -50,7 +54,7 @@ export class UsersComponent implements OnInit {
   }
 
   changeUserRole(userId: number, isSuper: boolean): void {
-    const token = localStorage.getItem('accessToken');
+    const token = this.token
     if (!token) {
         console.error('Token de acceso no encontrado en el localStorage');
         return;
@@ -69,14 +73,14 @@ export class UsersComponent implements OnInit {
 
         if (!response.ok) {
           return response.json().then(err => {
-            console.error('Error response:', err); // Log de error detallado
+            console.error('Error response:', err);
             throw new Error('Error al cambiar el rol del usuario');
         });
       }
         return response.json();
     })
     .then(() => {
-        this.getAllUsers(); // Actualizar la lista de usuarios después de cambiar el rol
+        this.getAllUsers();
     })
     .catch(error => {
         console.error('Error:', error);
@@ -85,7 +89,7 @@ export class UsersComponent implements OnInit {
 
 
   banUser(userId: number): void {
-    const token = localStorage.getItem('accessToken');
+    const token = this.token
     if (!token) {
       console.error('Token de acceso no encontrado en el localStorage');
       return;
@@ -105,7 +109,7 @@ export class UsersComponent implements OnInit {
       return response.json();
     })
     .then(() => {
-      this.getAllUsers(); // Actualizar la lista de usuarios después de banear
+      this.getAllUsers();
     })
     .catch(error => {
       console.error('Error:', error);

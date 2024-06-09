@@ -61,9 +61,13 @@ export class MessagePageComponent implements OnInit, OnDestroy, AfterViewChecked
     this.scrollToBottom();
   }
 
+  get token(){
+    return this.authService.currentUserInfo?.access_token
+  }
+
   fetchMessages(): void {
     if (this.chatId) {
-      const token = localStorage.getItem('accessToken');
+      const token = this.token
       if (token) {
         const headers = new HttpHeaders({
           'Authorization': `Bearer ${token}`
@@ -89,7 +93,7 @@ export class MessagePageComponent implements OnInit, OnDestroy, AfterViewChecked
   sendMessage(): void {
     console.log('Sending message:', this.messageForm.value.content);
     if (this.chatId && this.messageForm.valid) {
-      const token = localStorage.getItem('accessToken');
+      const token = this.token
       if (token) {
         const headers = new HttpHeaders({
           'Authorization': `Bearer ${token}`,
