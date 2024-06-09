@@ -17,11 +17,31 @@
 Para depslegar el front, necesitas hacer un git clone a mi front 
 
 ```javascript
-git clone https://github.com/alejandro-diaz-barea/TFG_DAW/tree/main/front-end_vue/front-end-easeSell
+git clone https://github.com/alejandro-diaz-barea/TFG_DAW
 ```
 
 Luego se realiza el despliegue en local con :
 
 ```javascript
+npm install
 ng serve
+```
+
+### 2º Back
+
+Para desplegar el backend, necesitas una vez clonado el proyecto realizar el comando en el archivo del backend esto : 
+
+```javascript
+compose install
+```
+
+Luego desplegar xampp y con eso modificar el .env del proyecto para la base de datos 
+
+![env](env.png)
+
+Luego ejecutar
+
+```javascript
+php artisan migrate
+php artisan serve
 ```
