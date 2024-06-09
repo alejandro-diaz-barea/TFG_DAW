@@ -87,6 +87,12 @@ Para la aplicación, decidí usar tonos claros como el blanco y el azul, con los
 
 ![Paleta de colores](paleta.png)
 
+### 4.1 Accesibilidad 
+
+Home
+![home](achome.png)
+
+Al ser de angular no me pilla el main y solo me esta pillando el navbar y el footer porque en anteriores proyectos en vue si me ha dejado
 ### 4.2. Diseño
 
 ![En cuanto a el diseño de la base de datos, la he hecho en mysql y esta es la entidad/relacion](uml.png)
