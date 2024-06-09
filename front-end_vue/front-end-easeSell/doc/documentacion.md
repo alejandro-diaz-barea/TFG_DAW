@@ -163,7 +163,7 @@ Aquí pueden ver cómo maneja a los usuarios:
 
 Aquí como veis puede borrar todos los productos:
 
-![Productos](myProduct.png)
+![Productos](produc.png)<
 
 ## 7. Despliegue
 
