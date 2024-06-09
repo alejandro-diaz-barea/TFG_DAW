@@ -28,14 +28,17 @@ export class MessagePageComponent implements OnInit, OnDestroy, AfterViewChecked
     private authService: AuthService
   ) { }
 
+
   get currentUserID() {
     return this.authService.currentUserInfo?.id;
   }
 
   ngOnInit(): void {
+
     this.messageForm = this.formBuilder.group({
       content: ['', Validators.required]
     });
+
 
     this.route.queryParams.subscribe(params => {
       this.chatId = params['chatId'];
@@ -44,12 +47,17 @@ export class MessagePageComponent implements OnInit, OnDestroy, AfterViewChecked
       console.log('Chat ID:', this.chatId);
       console.log('Chat Name:', this.chatName);
       console.log('Chat Photo URL:', this.chatPhotoUrl);
+
+
       this.fetchMessages();
+
+
       this.initializePusher();
     });
     console.log('ngOnInit() executed');
   }
 
+  // Limpieza de Pusher al destruir el componente
   ngOnDestroy(): void {
     if (this.pusherChannel) {
       this.pusherChannel.unbind_all();
@@ -57,14 +65,17 @@ export class MessagePageComponent implements OnInit, OnDestroy, AfterViewChecked
     }
   }
 
+  // Método para desplazarse al final del contenedor de mensajes después de cada cambio
   ngAfterViewChecked(): void {
     this.scrollToBottom();
   }
+
 
   get token(){
     return this.authService.currentUserInfo?.access_token
   }
 
+  // Método para obtener los mensajes del chat desde el servidor
   fetchMessages(): void {
     if (this.chatId) {
       const token = this.token
@@ -90,6 +101,7 @@ export class MessagePageComponent implements OnInit, OnDestroy, AfterViewChecked
     }
   }
 
+
   sendMessage(): void {
     console.log('Sending message:', this.messageForm.value.content);
     if (this.chatId && this.messageForm.valid) {
@@ -110,7 +122,7 @@ export class MessagePageComponent implements OnInit, OnDestroy, AfterViewChecked
             (response) => {
               console.log('Message sent successfully:', response);
               this.messageForm.reset();
-              this.fetchMessages(); // Refresh messages after sending
+              this.fetchMessages(); // Actualizar mensajes después de enviar
             },
             (error) => {
               console.error('Error al enviar el mensaje:', error);
@@ -122,6 +134,7 @@ export class MessagePageComponent implements OnInit, OnDestroy, AfterViewChecked
     }
   }
 
+  // Inicialización de Pusher para escuchar eventos de mensajes
   initializePusher(): void {
     if (this.chatId) {
       const pusher = new Pusher.default('136f1ba31fe89725b0ff', {
@@ -140,6 +153,7 @@ export class MessagePageComponent implements OnInit, OnDestroy, AfterViewChecked
     }
   }
 
+  // Método privado para desplazarse al final del contenedor de mensajes
   private scrollToBottom(): void {
     try {
       this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;

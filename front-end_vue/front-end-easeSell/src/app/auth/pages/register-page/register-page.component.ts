@@ -13,6 +13,7 @@ export class RegisterPageComponent {
   public validationErrors: any = {};
 
   constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) {
+
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -20,14 +21,16 @@ export class RegisterPageComponent {
       name: ['', [Validators.required]],
       address: ['', [Validators.required]],
       phone_number: ['', [Validators.required]],
-      terms: [false, Validators.requiredTrue] 
+      terms: [false, Validators.requiredTrue]
     });
 
+    // Agrega un controlador de eventos para manejar los cambios en los campos del formulario
     Object.keys(this.registerForm.controls).forEach(key => {
       this.addBlurHandler(key);
     });
   }
 
+  // Agrega un controlador de eventos para el evento blur de cada campo del formulario
   addBlurHandler(controlName: string): void {
     const control = this.registerForm.get(controlName);
     if (control) {
@@ -46,6 +49,7 @@ export class RegisterPageComponent {
     }
   }
 
+  // Valida el campo dado y muestra los errores si los hay
   validateField(controlName: string): void {
     const control = this.registerForm.get(controlName);
     if (control) {
@@ -60,6 +64,7 @@ export class RegisterPageComponent {
     }
   }
 
+  // Valida si las contraseñas coinciden y muestra un mensaje de error si no lo hacen
   validatePasswordMatch(): void {
     const password = this.registerForm.get('password')?.value;
     const repeatPassword = this.registerForm.get('repeat_password')?.value;
@@ -71,18 +76,23 @@ export class RegisterPageComponent {
     }
   }
 
+
   register(): void {
+
     Object.keys(this.registerForm.controls).forEach(key => {
       this.validateField(key);
     });
 
+    // Si hay errores de validación, no procede con el registro
     if (Object.keys(this.validationErrors).length > 0) {
       return;
     }
 
+
     const userData = { ...this.registerForm.value };
     delete userData.repeat_password;
 
+    // Llama al servicio de autenticación para registrar al usuario
     this.authService.register(userData)
       .then(response => {
         if (response.success) {

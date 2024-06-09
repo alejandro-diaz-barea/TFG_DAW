@@ -88,6 +88,8 @@ export class SellPageComponent implements OnDestroy {
   }
 
 
+
+  // Metodo no usado para editar productos
   loadProduct(id: number) {
 
     const token = this.token
@@ -181,6 +183,7 @@ export class SellPageComponent implements OnDestroy {
         'Authorization': `Bearer ${token}`
       });
 
+      // crear producto
       this.http.post<any>('http://127.0.0.1:8000/api/v1/products', formData, { headers }).subscribe(
         response => {
           console.log("Product created: " + response)
@@ -199,7 +202,7 @@ export class SellPageComponent implements OnDestroy {
           };
           this.formSubmitted = false;
 
-          // Display success message for 3 seconds
+
           this.successTimeout = setTimeout(() => {
             this.successMessage = '';
           }, 3000);

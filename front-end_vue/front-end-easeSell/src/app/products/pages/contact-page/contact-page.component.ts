@@ -16,6 +16,7 @@ export class ContactPageComponent {
 
   constructor(private fb: FormBuilder) {}
 
+  // Método para enviar el formulario
   public enviarFormulario(): void {
     if (this.contact.valid) {
       console.log("Formulario válido, enviando...");
@@ -28,6 +29,7 @@ export class ContactPageComponent {
     }
   }
 
+  // Método para validar un campo específico
   public validarCampo(campo: string): void {
     const control = this.contact.get(campo);
     if (control) {
@@ -36,11 +38,13 @@ export class ContactPageComponent {
     }
   }
 
+  // Método privado para resetear el formulario después de enviarlo con éxito
   private resetearFormulario(): void {
     this.contact.reset();
     this.enviadoConExito = false;
   }
 
+  // Método privado para validar la fecha seleccionada
   private validarFecha(control: AbstractControl): ValidationErrors | null {
     const fechaSeleccionada = control.value;
     const fechaMinima = new Date('2024-01-01');

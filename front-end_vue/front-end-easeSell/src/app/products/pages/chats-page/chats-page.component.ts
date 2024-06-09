@@ -14,15 +14,18 @@ export class ChatsPageComponent implements OnInit {
   constructor(private http: HttpClient, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+
     this.fetchChats();
   }
 
+
   fetchChats(): void {
-    const token = this.authService.currentUserInfo?.access_token
+    const token = this.authService.currentUserInfo?.access_token;
     if (token) {
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${token}`
       });
+
 
       this.http.get<any[]>('http://127.0.0.1:8000/api/v1/chats', { headers })
         .subscribe(
@@ -43,16 +46,19 @@ export class ChatsPageComponent implements OnInit {
     }
   }
 
+  // Obtiene la ruta de la imagen del usuario
   getUserLogoPath(user: any): string {
     const baseUrl = 'http://127.0.0.1:8000/';
     return user?.logo_path ? `${baseUrl}${user.logo_path}` : '../../../../assets/profile-user.png';
   }
 
+  // Obtiene el otro usuario del chat
   getOtherUser(chat: any): any {
     const currentUserID = this.userInfo;
     return chat.user1.id === currentUserID ? chat.user2 : chat.user1;
   }
 
+  // Obtiene el nombre del otro usuario del chat
   getOtherUserName(chat: any): string {
     const currentUserID = this.userInfo;
     if (chat.user1.id === currentUserID) {
@@ -62,10 +68,12 @@ export class ChatsPageComponent implements OnInit {
     }
   }
 
+  // Obtiene la información del usuario actual
   get userInfo(): number | undefined {
     return this.authService.currentUserInfo?.id;
   }
 
+  // Navega a la página de mensajes con el chatId y el nombre del otro usuario
   navigateToMessages(chatId: number, otherName: string, url_photo: string ): void {
     this.router.navigate(['/chats/messages'], { queryParams: { chatId, otherName, url_photo } });
   }

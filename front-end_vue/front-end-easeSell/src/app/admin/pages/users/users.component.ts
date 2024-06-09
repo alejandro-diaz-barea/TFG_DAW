@@ -15,12 +15,12 @@ export class UsersComponent implements OnInit {
     this.getAllUsers();
   }
 
-  get token(){
-    return this.authService.currentUserInfo?.access_token
+  get token() {
+    return this.authService.currentUserInfo?.access_token;
   }
 
   getAllUsers(): void {
-    const token = this.token
+    const token = this.token;
     if (!token) {
       console.error('Token de acceso no encontrado en el localStorage');
       return;
@@ -40,8 +40,7 @@ export class UsersComponent implements OnInit {
       return response.json();
     })
     .then(data => {
-      console.log(data)
-
+      console.log(data);
       this.users = data;
     })
     .catch(error => {
@@ -53,43 +52,44 @@ export class UsersComponent implements OnInit {
     return this.authService.currentUserInfo?.name;
   }
 
+  // Cambia el rol del usuario (superadmin o usuario regular)
   changeUserRole(userId: number, isSuper: boolean): void {
-    const token = this.token
+    const token = this.token;
     if (!token) {
-        console.error('Token de acceso no encontrado en el localStorage');
-        return;
+      console.error('Token de acceso no encontrado en el localStorage');
+      return;
     }
 
     fetch(`http://127.0.0.1:8000/api/v1/users/${userId}/change-role`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ is_super: isSuper })
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ is_super: isSuper })
     })
     .then(response => {
       console.log('Response:', response);
 
-        if (!response.ok) {
-          return response.json().then(err => {
-            console.error('Error response:', err);
-            throw new Error('Error al cambiar el rol del usuario');
+      if (!response.ok) {
+        return response.json().then(err => {
+          console.error('Error response:', err);
+          throw new Error('Error al cambiar el rol del usuario');
         });
       }
-        return response.json();
+      return response.json();
     })
     .then(() => {
-        this.getAllUsers();
+      this.getAllUsers(); // Refresca la lista de usuarios después de cambiar el rol
     })
     .catch(error => {
-        console.error('Error:', error);
+      console.error('Error:', error);
     });
-}
+  }
 
-
+  // Banea a un usuario
   banUser(userId: number): void {
-    const token = this.token
+    const token = this.token;
     if (!token) {
       console.error('Token de acceso no encontrado en el localStorage');
       return;
@@ -109,7 +109,7 @@ export class UsersComponent implements OnInit {
       return response.json();
     })
     .then(() => {
-      this.getAllUsers();
+      this.getAllUsers(); // Refresca la lista de usuarios después de banear a uno
     })
     .catch(error => {
       console.error('Error:', error);

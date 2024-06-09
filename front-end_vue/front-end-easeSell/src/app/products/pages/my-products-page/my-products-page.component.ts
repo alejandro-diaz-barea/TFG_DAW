@@ -73,7 +73,7 @@ export class MyProductsPageComponent implements OnInit {
       this.products$ = of(products);
       this.filteredProducts$ = of(products);
     }, error => {
-      // Handle HTTP request error here
+
       console.error('Error en la solicitud HTTP:', error);
       this.errorMessage = 'Products not found';
     });

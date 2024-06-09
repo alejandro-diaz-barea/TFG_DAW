@@ -23,8 +23,8 @@ export class ExplorePageComponent implements OnInit {
   selectedCategories: number[] = [];
   showFilterPopup: boolean = false;
   errorMessage: string = '';
-  errorMessagePopUp: string= '';
-  showErrorPopup: boolean = false; // Propiedad agregada
+  errorMessagePopUp: string = '';
+  showErrorPopup: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -122,8 +122,8 @@ export class ExplorePageComponent implements OnInit {
     }
   }
 
-  get token(){
-    return this.authService.currentUserInfo?.access_token
+  get token() {
+    return this.authService.currentUserInfo?.access_token;
   }
 
   contactSeller(sellerId: number): void {
@@ -131,7 +131,7 @@ export class ExplorePageComponent implements OnInit {
       this.router.navigate(['/auth/login']);
       return;
     }
-    const token = this.token
+    const token = this.token;
     if (token) {
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${token}`
@@ -170,7 +170,7 @@ export class ExplorePageComponent implements OnInit {
   }
 
   deleteProduct(productId: number): void {
-    const token = this.token
+    const token = this.token;
     if (!token) {
       console.error('Token de autenticación no encontrado.');
       return;
